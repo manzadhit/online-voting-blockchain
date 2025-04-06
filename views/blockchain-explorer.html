@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Voting Blockchain</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        padding-bottom: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2563eb;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #4b5563;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: #2563eb;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #1e40af;
+        border-left: 4px solid #2563eb;
+        padding-left: 10px;
+      }
+
+      .blockchain-visualization {
+        display: flex;
+        overflow-x: auto;
+        margin-bottom: 30px;
+        padding: 20px 0;
+      }
+
+      .block {
+        min-width: 180px;
+        height: 120px;
+        background-color: #fff;
+        border-radius: 8px;
+        margin-right: 20px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .block:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .block::after {
+        content: "→";
+        position: absolute;
+        right: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        color: #94a3b8;
+      }
+
+      .block:last-child::after {
+        display: none;
+      }
+
+      .block.selected {
+        background-color: #dbeafe;
+        border: 2px solid #2563eb;
+      }
+
+      .block-number {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #1e40af;
+      }
+
+      .block-hash {
+        font-size: 0.8rem;
+        color: #64748b;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .block-timestamp {
+        font-size: 0.7rem;
+        color: #94a3b8;
+      }
+
+      .block-details {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .detail-item {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .detail-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #4b5563;
+      }
+
+      .detail-value {
+        padding: 10px;
+        background-color: #f8fafc;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        word-break: break-all;
+        border: 1px solid #e2e8f0;
+      }
+
+      .transactions {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        text-align: left;
+        padding: 12px 15px;
+        background-color: #f1f5f9;
+        color: #475569;
+        font-weight: 600;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      tr:hover {
+        background-color: #f8fafc;
+      }
+
+      .encrypted-data {
+        font-family: "Courier New", monospace;
+        color: #64748b;
+        background-color: #f1f5f9;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+
+      .verification-section {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .verify-button {
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .verify-button:hover {
+        background-color: #1d4ed8;
+      }
+
+      .verification-status {
+        display: flex;
+        align-items: center;
+      }
+
+      .status-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #22c55e;
+        margin-right: 10px;
+      }
+
+      .status-text {
+        font-weight: 600;
+        color: #22c55e;
+      }
+
+      .block-invalid {
+        background-color: #fee2e2 !important;
+        border: 2px solid #ef4444 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">BlockVote</div>
+      <nav>
+        <ul>
+          <li><a href="beranda.html">Beranda</a></li>
+          <li><a href="blockchain-explorer.html">Blockchain Explorer</a></li>
+          <li><a href="voting.html">Vote Now</a></li>
+          <li><a href="result.html">Hasil Voting</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="container">
+      <h2 class="section-title">Blockchain Explorer</h2>
+
+      <div class="blockchain-visualization"></div>
+
+      <h2 class="section-title">Detail Block</h2>
+
+      <div class="block-details">
+        <div class="detail-item">
+          <span class="detail-label">Block Number</span>
+          <span class="detail-value"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Timestamp</span>
+          <span class="detail-value"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Previous Hash</span>
+          <span class="detail-value"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Current Hash</span>
+          <span class="detail-value"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Nonce</span>
+          <span class="detail-value"></span>
+        </div>
+      </div>
+
+      <h2 class="section-title">Transaksi dalam Block</h2>
+
+      <div class="transactions">
+        <table>
+          <thead>
+            <tr>
+              <th>ID Transaksi</th>
+              <th>Timestamp</th>
+              <th>Voter ID (Hash)</th>
+              <th>Vote (Encrypted)</th>
+              <th>Signature</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="verification-section">
+        <button class="verify-button">Verifikasi Integritas Block</button>
+        <div class="verification-status">
+          <div class="status-indicator"></div>
+          <span class="status-text"></span>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      // Load all blocks
+      function loadBlocks() {
+        $.ajax({
+          url: "http://localhost:3000/blocks",
+          method: "GET",
+          success: function (response) {
+            // Extract blocks from the nested response structure
+            const blocks = response.data.blocks;
+            const blockContainer = $(".blockchain-visualization");
+            blockContainer.empty();
+
+            blocks.forEach((block) => {
+              // Format timestamp to match "2025-04-02 14:32:15" pattern
+              const date = new Date(block.timestamp);
+              const formattedDate = formatTimestamp(date);
+
+              const blockElement = $(`
+          <div class="block" data-block-number="${block.blockNumber}">
+            <div class="block-number">Block #${block.blockNumber}</div>
+            <div class="block-hash">${block.hash.substring(0, 8)}...</div>
+            <div class="block-timestamp">${formattedDate}</div>
+          </div>
+        `);
+
+              blockContainer.append(blockElement);
+              verifyBlockIntegrity(block.blockNumber);
+            });
+
+            // Set click handlers
+            $(".block").click(function () {
+              const blockNumber = $(this).data("block-number");
+              loadBlockDetails(blockNumber);
+              verifyBlockIntegrity(blockNumber);
+            });
+
+            // Auto-select the latest block
+            if (blocks.length > 0) {
+              loadBlockDetails(blocks[blocks.length - 1].blockNumber);
+            }
+          },
+          error: function (error) {
+            console.error("Error loading blocks:", error);
+          },
+        });
+      }
+
+      // Format timestamp to YYYY-MM-DD HH:MM:SS
+      function formatTimestamp(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      }
+
+      // Format time to HH:MM:SS
+      function formatTime(date) {
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+
+        return `${hours}:${minutes}:${seconds}`;
+      }
+
+      // Truncate hash to show only beginning with ellipsis
+      function truncateHash(hash, length = 20) {
+        if (!hash) return "";
+        return hash.substring(0, length) + "...";
+      }
+
+      // Load details for a specific block
+      function loadBlockDetails(blockNumber) {
+        // Find the block in the already loaded data
+        $.ajax({
+          url: "http://localhost:3000/blocks",
+          method: "GET",
+          success: function (response) {
+            const blocks = response.data.blocks;
+            const block = blocks.find((b) => b.blockNumber == blockNumber);
+
+            if (!block) {
+              console.error("Block not found:", blockNumber);
+              return;
+            }
+
+            // Format timestamp for display
+            const date = new Date(block.timestamp);
+            const formattedDate = formatTimestamp(date);
+
+            // Update block details section
+            $(".detail-value:eq(0)").text(block.blockNumber);
+            $(".detail-value:eq(1)").text(formattedDate);
+            $(".detail-value:eq(2)").text(block.previousHash);
+            $(".detail-value:eq(3)").text(block.hash);
+            $(".detail-value:eq(4)").text(block.nonce);
+
+            // Update transactions table
+            const transactionsTable = $(".transactions tbody");
+            transactionsTable.empty();
+
+            if (block.transactions && block.transactions.length > 0) {
+              block.transactions.forEach((tx) => {
+                const txTime = new Date(tx.timestamp);
+                const formattedTime = formatTime(txTime);
+
+                const row = $(`
+            <tr>
+              <td>${tx.id}</td>
+              <td>${formattedTime}</td>
+              <td class="encrypted-data">${truncateHash(tx.voterId)}</td>
+              <td class="encrypted-data">${truncateHash(tx.vote)}</td>
+              <td class="encrypted-data">${truncateHash(tx.signature, 10)}</td>
+            </tr>
+          `);
+                transactionsTable.append(row);
+              });
+            }
+
+            // Highlight the selected block
+            $(".block").removeClass("selected");
+            $(`.block[data-block-number="${blockNumber}"]`).addClass(
+              "selected"
+            );
+          },
+          error: function (error) {
+            console.error("Error loading block details:", error);
+          },
+        });
+
+        verifyBlockIntegrity(blockNumber);
+      }
+
+      function verifyBlockIntegrity(blockNumber) {
+        $.ajax({
+          url: `http://localhost:3000/blocks/${blockNumber}/verify`,
+          method: "GET",
+          success: function (response) {
+            const isValid = response.data.isValid;
+            console.log(isValid);
+
+            if (isValid) {
+              $(".status-indicator").css("background-color", "#22c55e");
+              $(".status-text").text("VALID ✓").css("color", "#22c55e");
+            } else {
+              $(".status-indicator").css("background-color", "#ef4444");
+              $(".status-text").text("INVALID ✗").css("color", "#ef4444");
+            }
+          },
+          error: function (error) {
+            console.error("Error verifying block:", error);
+            $(".status-indicator").css("background-color", "#ef4444");
+            $(".status-text")
+              .text("VERIFICATION ERROR")
+              .css("color", "#ef4444");
+          },
+        });
+      }
+      // Verify block integrity
+      $(".verify-button").click(function () {
+        const blockNumber = $(".detail-value:eq(0)").text();
+        verifyBlockIntegrity(blockNumber);
+      });
+
+      // Load blocks on page load
+      loadBlocks();
+    });
+  </script>
+</html>

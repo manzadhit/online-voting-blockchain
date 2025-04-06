@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "blockNumber": 0,
+      "previousHash": "0x0",
+      "timestamp": "2025-04-05T15:43:46.584Z",
+      "transactions": [
+        {
+          "id": "0xgenesis",
+          "timestamp": "2025-04-05T15:43:46.584Z",
+          "voterId": "0x0",
+          "vote": "Genesis Block",
+          "electionId": "0x0",
+          "signature": "0x0"
+        }
+      ],
+      "nonce": 426160,
+      "hash": "3a9a8f8126e0035c7c09760797d87d6e2800f98380d557fa6f59302da4e395f7"
+    },
+    {
+      "blockNumber": 1,
+      "timestamp": "2025-04-06T09:41:55.212Z",
+      "previousHash": "3a9a8f8126e0035c7c09760797d87d6e2800f98380d557fa6f59302da4e395f7",
+      "transactions": [
+        {
+          "id": "0xf056",
+          "timestamp": "2025-04-06T09:41:55.212Z",
+          "voterId": "1450dbd7fa3bc2c8d1f6f70f1a4fd5ca391d77bcd81250c6e12d40b64f7e460d",
+          "vote": "39a839b7b10024553b657ce56f69dab119fcc0ccfa56a2be0022cbc649a88121",
+          "electionId": "0d1d54948c86449866ad0841486da988bda497f5e14ede1633e5090f286bb416",
+          "signature": "77024d1780"
+        }
+      ],
+      "nonce": 329084,
+      "hash": "e75e2625c5143f0289a9d0b22f257e71fd4c32fcae31732da23393fd35ee615b"
+    }
+  ]
+}

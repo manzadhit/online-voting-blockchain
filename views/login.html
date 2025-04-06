@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlockVote - Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        padding: 0;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2563eb;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #4b5563;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: #2563eb;
+      }
+
+      nav ul li a.active {
+        color: #2563eb;
+        font-weight: 600;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .login-header {
+        background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+      }
+
+      .login-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .login-header p {
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+        opacity: 0.9;
+      }
+
+      .login-section {
+        padding: 60px 0;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #1e40af;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 40px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .login-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #2563eb;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        border: none;
+        font-size: 1rem;
+        width: 100%;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn-primary {
+        background-color: #2563eb;
+        color: white;
+      }
+
+      .login-options {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+
+      .login-options a {
+        color: #2563eb;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .login-options a:hover {
+        text-decoration: underline;
+      }
+
+      .divider {
+        margin: 30px 0;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #94a3b8;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .divider span {
+        padding: 0 10px;
+      }
+
+      .auth-methods {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .auth-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .auth-btn:hover {
+        background-color: #f8fafc;
+        border-color: #cbd5e1;
+      }
+
+      .auth-btn img {
+        height: 24px;
+        margin-right: 10px;
+      }
+
+      .security-info {
+        background-color: #f0f9ff;
+        border-radius: 8px;
+        border-left: 4px solid #3b82f6;
+        padding: 15px;
+        margin-top: 30px;
+        font-size: 0.9rem;
+        color: #475569;
+      }
+
+      .security-info h4 {
+        display: flex;
+        align-items: center;
+        color: #1e40af;
+        margin-bottom: 10px;
+      }
+
+      .security-info h4 svg {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+
+      .register-prompt {
+        text-align: center;
+        margin-top: 30px;
+        color: #64748b;
+      }
+
+      .register-prompt a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+
+      .register-prompt a:hover {
+        text-decoration: underline;
+      }
+
+      footer {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 40px 0;
+        margin-top: 60px;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .footer-info {
+        width: 30%;
+      }
+
+      .footer-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .footer-info p {
+        color: #94a3b8;
+        line-height: 1.6;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 60px;
+      }
+
+      .footer-links-column h3 {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        color: white;
+      }
+
+      .footer-links-column ul {
+        list-style: none;
+      }
+
+      .footer-links-column ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links-column ul li a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: color 0.3s;
+        font-size: 0.9rem;
+      }
+
+      .footer-links-column ul li a:hover {
+        color: #e2e8f0;
+      }
+
+      .footer-bottom {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #334155;
+        text-align: center;
+        color: #64748b;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .login-container {
+          padding: 20px;
+        }
+
+        .footer-content {
+          flex-direction: column;
+        }
+
+        .footer-info {
+          width: 100%;
+          margin-bottom: 30px;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">BlockVote</div>
+      <nav>
+        <ul>
+          <li><a href="beranda.html">Beranda</a></li>
+          <li><a href="blockchain-explorer.html">Blockchain Explorer</a></li>
+          <li><a href="voting.html">Vote Now</a></li>
+          <li><a href="result.html">Hasil Voting</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="login-header">
+      <div class="container">
+        <h1>Selamat Datang di BlockVote</h1>
+        <p>
+          Masuk untuk berpartisipasi dalam pemilihan dan memberikan suara Anda
+          secara aman menggunakan teknologi blockchain.
+        </p>
+      </div>
+    </section>
+
+    <section class="login-section">
+      <div class="container">
+        <h2 class="section-title">Masuk ke Akun Anda</h2>
+        <p class="section-subtitle">
+          Gunakan ID pemilih dan password yang telah diverifikasi untuk masuk ke
+          sistem.
+        </p>
+
+        <div class="login-container">
+          <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="form-group">
+              <label for="nim">NIM</label>
+              <input
+                type="text"
+                id="nim"
+                placeholder="Masukkan ID pemilih Anda"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Masukkan password Anda"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Masuk</button>
+
+            <div class="login-options">
+              <label>
+                <input type="checkbox" id="remember-me" /> Ingat saya
+              </label>
+              <a href="#">Lupa password?</a>
+            </div>
+
+            <div class="security-info">
+              <h4>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect
+                    x="3"
+                    y="11"
+                    width="18"
+                    height="11"
+                    rx="2"
+                    ry="2"
+                  ></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Informasi Keamanan
+              </h4>
+              <p>
+                ID Pemilih dan password Anda dienkripsi menggunakan standar
+                keamanan tertinggi. Kami tidak pernah menyimpan password Anda
+                dalam bentuk teks biasa.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-info">
+            <div class="footer-logo">BlockVote</div>
+            <p>
+              Sistem voting online berbasis blockchain yang menggabungkan
+              keamanan kriptografi dengan transparansi blockchain untuk
+              memastikan integritas proses voting digital.
+            </p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-links-column">
+              <h3>Platform</h3>
+              <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Blockchain Explorer</a></li>
+                <li><a href="#">Vote Now</a></li>
+                <li><a href="#">Hasil Voting</a></li>
+              </ul>
+            </div>
+            <div class="footer-links-column">
+              <h3>Sumber Daya</h3>
+              <ul>
+                <li><a href="#">Dokumentasi</a></li>
+                <li><a href="#">Whitepaper</a></li>
+                <li><a href="#">Tutorial</a></li>
+                <li><a href="#">API</a></li>
+              </ul>
+            </div>
+            <div class="footer-links-column">
+              <h3>Kontak</h3>
+              <ul>
+                <li><a href="#">Email</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">GitHub</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 BlockVote. Hak Cipta Dilindungi.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function handleLogin(event) {
+        event.preventDefault();
+
+        const nim = $("#nim").val();
+        const password = $("#password").val();
+
+        // Basic validation
+        if (!nim || !password) {
+          alert("Silakan lengkapi semua bidang yang diperlukan.");
+          return false;
+        }
+
+        // Show loading state (optional)
+        $(".btn-primary").text("Sedang Memproses...").prop("disabled", true);
+
+        // Send login request to backend
+        $.ajax({
+          url: "http://localhost:3000/auth/login",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            nim: nim,
+            password: password,
+          }),
+          success: function (response) {
+            console.log("Login berhasil:", response);
+
+            // Store user data in localStorage or sessionStorage for later use
+            localStorage.setItem("userData", JSON.stringify(response.data));
+            localStorage.setItem("isLoggedIn", "true");
+
+            // Redirect to voting page after successful login
+            window.location.href = "voting.html";
+          },
+          error: function (xhr, status, error) {
+            // Reset button
+            $(".btn-primary").text("Masuk").prop("disabled", false);
+
+            // Handle different error scenarios
+            if (xhr.status === 401) {
+              alert("NIM atau password salah. Silakan coba lagi.");
+            } else if (xhr.status === 404) {
+              alert("Pengguna tidak ditemukan.");
+            } else {
+              alert(
+                "Terjadi kesalahan: " +
+                  (xhr.responseJSON?.message ||
+                    "Tidak dapat terhubung ke server")
+              );
+            }
+            console.error("Error during login:", xhr.responseJSON);
+          },
+        });
+
+        return false;
+      }
+
+      // Add a logout function (you can use this in other pages)
+      function logout() {
+        localStorage.removeItem("userData");
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "index.html"; // Redirect to login page
+      }
+
+      // Check if user is already logged in (add this to pages that require authentication)
+      function checkLoginStatus() {
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        if (!isLoggedIn && window.location.pathname !== "/index.html") {
+          window.location.href = "index.html"; // Redirect to login page
+          return false;
+        }
+        return isLoggedIn;
+      }
+    </script>
+  </body>
+</html>
