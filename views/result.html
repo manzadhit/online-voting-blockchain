@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hasil Voting - Sistem Voting Blockchain</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -368,61 +369,30 @@
       </nav>
     </header>
     <div class="container">
-
-      <h2 class="section-title">Hasil Voting Pemilihan Kepala Daerah 2025</h2>
+      <h2 class="section-title election-name">Hasil Voting Pemilihan Kepala Daerah 2025</h2>
 
       <div class="voting-info-panel">
         <div class="voting-stats">
           <div class="stat-box">
-            <div class="stat-value">7,845</div>
+            <div class="stat-value">0</div>
             <div class="stat-label">Total Suara</div>
           </div>
           <div class="stat-box">
-            <div class="stat-value">86.3%</div>
-            <div class="stat-label">Partisipasi</div>
+            <div class="stat-value">0</div>
+            <div class="stat-label">Total Pemilih</div>
           </div>
           <div class="stat-box">
-            <div class="stat-value">5</div>
-            <div class="stat-label">Blocks Terverifikasi</div>
+            <div class="stat-value">0%</div>
+            <div class="stat-label">Partisipasi</div>
           </div>
         </div>
         <div class="countdown">
           <div class="countdown-label">Voting Berakhir Dalam</div>
-          <div class="countdown-value">02:14:35</div>
+          <div class="countdown-value">00:00:00</div>
         </div>
       </div>
 
       <div class="results-container">
-        <div class="results-chart">
-          <h3 class="history-title">Persentase Perolehan Suara</h3>
-          <div class="chart-container">
-            <div class="chart-bar candidate-1">
-              <div class="percentage">44.5%</div>
-              <div class="bar"></div>
-              <div class="candidate-name">Budi Santoso</div>
-              <div class="votes">3,491 suara</div>
-            </div>
-            <div class="chart-bar candidate-2">
-              <div class="percentage">38.2%</div>
-              <div class="bar"></div>
-              <div class="candidate-name">Sri Handayani</div>
-              <div class="votes">2,997 suara</div>
-            </div>
-            <div class="chart-bar candidate-3">
-              <div class="percentage">10.1%</div>
-              <div class="bar"></div>
-              <div class="candidate-name">Ahmad Fadli</div>
-              <div class="votes">792 suara</div>
-            </div>
-            <div class="chart-bar candidate-4">
-              <div class="percentage">7.2%</div>
-              <div class="bar"></div>
-              <div class="candidate-name">Dewi Kartika</div>
-              <div class="votes">565 suara</div>
-            </div>
-          </div>
-        </div>
-
         <div class="detail-table">
           <h3 class="history-title">Detail Perolehan Suara</h3>
           <table>
@@ -435,198 +405,60 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <span class="candidate-color color-1"></span> Budi Santoso
-                </td>
-                <td>3,491</td>
-                <td>44.5%</td>
-                <td>Memimpin</td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="candidate-color color-2"></span> Sri Handayani
-                </td>
-                <td>2,997</td>
-                <td>38.2%</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="candidate-color color-3"></span> Ahmad Fadli
-                </td>
-                <td>792</td>
-                <td>10.1%</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="candidate-color color-4"></span> Dewi Kartika
-                </td>
-                <td>565</td>
-                <td>7.2%</td>
-                <td>-</td>
-              </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-
-      <h2 class="section-title">Rekam Jejak Voting</h2>
-
-      <div class="vote-history">
-        <div class="history-header">
-          <div class="history-title">Aktivitas Voting Terakhir</div>
-          <a href="#" class="blockchain-link">
-            Lihat di Blockchain Explorer
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="7" y1="17" x2="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
-            </svg>
-          </a>
-        </div>
-
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-time">2025-04-02 14:32:15</div>
-            <div class="timeline-content">
-              Block #5 telah ditambahkan ke blockchain dengan 4 transaksi voting
-              baru
-              <div class="verification-badge">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Terverifikasi
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-time">2025-04-02 11:30:55</div>
-            <div class="timeline-content">
-              Block #4 telah ditambahkan ke blockchain dengan 7 transaksi voting
-              baru
-              <div class="verification-badge">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Terverifikasi
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-time">2025-04-02 09:05:18</div>
-            <div class="timeline-content">
-              Block #3 telah ditambahkan ke blockchain dengan 5 transaksi voting
-              baru
-              <div class="verification-badge">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Terverifikasi
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-time">2025-04-01 14:22:45</div>
-            <div class="timeline-content">
-              Block #2 telah ditambahkan ke blockchain dengan 8 transaksi voting
-              baru
-              <div class="verification-badge">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Terverifikasi
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-time">2025-04-01 10:15:32</div>
-            <div class="timeline-content">
-              Block #1 (Genesis) telah ditambahkan ke blockchain dengan 6
-              transaksi voting baru
-              <div class="verification-badge">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Terverifikasi
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </body>
   <script>
+    $(document).ready(function () {
+      const electionId = localStorage.getItem("electionId"); // Ganti dengan ID sesuai kebutuhan
+      const url = `http://localhost:3000/voting/result/${electionId}`;
 
-    
+      $.ajax({
+        url: url,
+        method: "GET",
+        success: function (response) {
+          const data = response.data;
+
+          // Tampilkan statistik voting
+          $(".election-name").text(data.electionName)
+          $(".stat-box").eq(0).find(".stat-value").text(data.totalVote);
+          $(".stat-box").eq(1).find(".stat-value").text(data.totalVoter);
+          $(".stat-box")
+            .eq(2)
+            .find(".stat-value")
+            .text(`${data.participationRate}%`);
+
+          // Countdown
+          $(".countdown-value").text(data.votingCountDown);
+
+          // Render tabel hasil voting
+          const tbody = $(".detail-table tbody");
+          tbody.empty(); // kosongkan isi tabel sebelum diisi
+
+          data.candidates.forEach((candidate, index) => {
+            const row = `
+            <tr>
+              <td>
+                <span class="candidate-color color-${index + 1}"></span> ${
+              candidate.mainName
+            }
+              </td>
+              <td>${candidate.voteCount}</td>
+              <td>${candidate.percentage}%</td>
+              <td>${candidate.status}</td>
+            </tr>
+          `;
+            tbody.append(row);
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error("Gagal mengambil data hasil voting:", error);
+          alert("Gagal memuat hasil voting. Silakan coba lagi nanti.");
+        },
+      });
+    });
   </script>
 </html>

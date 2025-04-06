@@ -33,6 +33,23 @@
       ],
       "nonce": 329084,
       "hash": "e75e2625c5143f0289a9d0b22f257e71fd4c32fcae31732da23393fd35ee615b"
+    },
+    {
+      "blockNumber": 2,
+      "timestamp": "2025-04-06T13:21:50.732Z",
+      "previousHash": "e75e2625c5143f0289a9d0b22f257e71fd4c32fcae31732da23393fd35ee615b",
+      "transactions": [
+        {
+          "id": "0xdc97",
+          "timestamp": "2025-04-06T13:21:50.731Z",
+          "voterId": "8de4786f75a65508b0daac7fd7462d488d8e1d304842a94a83503ed85e3cab37",
+          "vote": "dbe9716c2cc94e8b7fd43be9644b035338d749857fa96e61d1fd01c20ecf4f82",
+          "electionId": "2884ab02f636dde8e31f53eaeab4799d75be93888708495f20efce446ae6db45",
+          "signature": "0f7034eae7"
+        }
+      ],
+      "nonce": 449106,
+      "hash": "8a14c49a48f64ef3f8d0070217d67dd9bb14cd11e355bed4b9340ccbd680975d"
     }
   ]
 }

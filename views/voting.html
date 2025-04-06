@@ -759,9 +759,11 @@
             </div>
           </div>
 
-          <form id="voteForm" class="submit-vote">
-            <button type="submit" class="btn btn-primary vote-btn">Kirim Suara</button>
-          </form>
+          <div class="submit-vote" type="button">
+            <button type="button" class="btn btn-primary vote-btn">
+              Kirim Suara
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -863,18 +865,20 @@
   </body>
   <script>
     const userLogin = JSON.parse(localStorage.getItem("userData"));
-    const voterId = userLogin.nim;
+    const voterId = userLogin.id;
+    console.log(userLogin);
+    
 
     if (userLogin) {
-      const initials = userLogin.nama
+      const initials = userLogin.name
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase())
         .join("");
 
       $(".user-avatar").text(initials); // "BS"
-      $(".user-details h4").text(userLogin.nama); // "Budi Santoso"
+      $(".user-details h4").text(userLogin.name); // "Budi Santoso"
       $(".user-details p:nth-child(2)").text(`NIM: ${userLogin.nim}`); // NIM
-      $(".user-details p:nth-child(3)").text(userLogin.prodi); // Prodi
+      $(".user-details p:nth-child(3)").text(`Fakultas: ${userLogin.faculty}`); // Prodi
     }
 
     let electionId = null;
@@ -889,6 +893,7 @@
           if (response.status === 200) {
             const election = response.data[0];
             electionId = election.id;
+            localStorage.setItem('electionId', electionId);
             const endDate = new Date(election.endDate);
             const today = new Date();
 
@@ -923,17 +928,17 @@
             <div class="candidate-wrapper">
               <div class="candidate-photos">
                 <div class="candidate-photo">${
-                  candidate.mainCandidate.initials
+                  candidate.mainInitials
                 }</div>
                 <div class="candidate-photo deputy">${
-                  candidate.deputyCandidate.initials
+                  candidate.deputyInitials
                 }</div>
               </div>
               <div class="candidate-info">
-                <div class="candidate-pair">${candidate.mainCandidate.name.trim()} & ${candidate.deputyCandidate.name.trim()}</div>
+                <div class="candidate-pair">${candidate.mainName.trim()} & ${candidate.deputyName.trim()}</div>
                 <div class="candidate-faculty">
-                  ${candidate.mainCandidate.faculty} & ${
-                candidate.deputyCandidate.faculty
+                  ${candidate.mainFaculty} & ${
+                candidate.deputyFaculty
               }
                 </div>
               </div>

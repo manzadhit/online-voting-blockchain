@@ -19,18 +19,18 @@ const getStudentByNIM = async (nim) => {
     return student;
 };
 
-const createStudent = async (nim, nama, prodi, angkatan, password) => {
-    const hashedPassword = await bcrypt.hash(password, 10);
+const createStudent = async (nim, name, faculty, password) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    return await prisma.student.create({
-      data: {
-        nim,
-        nama,
-        prodi,
-        angkatan,
-        password: hashedPassword,
-      },
-    });
+  return await prisma.student.create({
+    data: {
+      nim,
+      name,
+      faculty,
+      password: hashedPassword,
+      votedElections: [], // Inisialisasi array kosong untuk pemilihan yang sudah diikuti
+    },
+  });
 };
 
 const updateStudent = async (nim, updatedData) => {

@@ -38,8 +38,19 @@ const submitVote = catchAsync(async (req, res) => {
   });
 });
 
+const getResult = catchAsync(async (req, res) => {
+  const { electionId } = req.params;
+  const result = await votingService.getResult(electionId);
+  return res.status(httpStatus.OK).send({
+    status: httpStatus.OK,
+    message: "Election Result retrieved successfully",
+    data: result,
+  });
+});
+
 module.exports = {
   getActiveElections,
   getVoterInfo,
   submitVote,
+  getResult,
 };

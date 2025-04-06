@@ -2,6 +2,8 @@ const express = require("express");
 const authRoutes = require("./auth.route");
 const blockRoutes = require("./blockchain.route");
 const voteRoutes = require("./vote.route");
+const electionRoute = require("./election.route");
+const candidateRoute = require("./candidate.route");
 
 const router = express.Router();
 
@@ -17,6 +19,14 @@ const Routes = [
   {
     path: "/voting",
     route: voteRoutes,
+  },
+  {
+    path: "/elections",
+    route: electionRoute,
+  },
+  {
+    path: "/candidates",
+    route: candidateRoute,
   },
 ];
 
