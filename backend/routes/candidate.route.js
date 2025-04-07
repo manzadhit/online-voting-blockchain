@@ -16,7 +16,7 @@ router.get(
 router
   .route("/:candidateId")
   .get(candidateController.getCandidate)
-  .patch(candidateController.updateCandidate)
+  .put(candidateController.updateCandidate)
   .delete(candidateController.deleteCandidate);
 
 router.post(

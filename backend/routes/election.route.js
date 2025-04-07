@@ -13,7 +13,7 @@ router.get("/active", electionController.getActiveElections);
 router
   .route("/:electionId")
   .get(electionController.getElection)
-  .patch(electionController.updateElection)
+  .put(electionController.updateElection)
   .delete(electionController.deleteElection);
 
 module.exports = router;
