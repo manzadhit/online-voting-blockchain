@@ -23,7 +23,6 @@ const getCandidates = catchAsync(async (req, res) => {
   if (req.query.electionId) {
     filter.electionId = req.query.electionId;
   }
-
   const candidates = await candidateService.getCandidates(filter);
 
   res.status(httpStatus.OK).send({

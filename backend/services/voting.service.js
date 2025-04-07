@@ -127,19 +127,7 @@ const getResult = async (electionId) => {
   });
 
   const results = candidates.map((candidate) => {
-    const hashedCandidateId = crypto
-      .createHash("sha256")
-      .update(candidate.id)
-      .digest("hex");
-
-    const voteCount = blockchainData.blocks?.reduce((acc, block) => {
-      const votes =
-        block.transactions?.filter(
-          (tx) =>
-            tx.vote === hashedCandidateId && tx.electionId === hashedElectionId
-        ).length || 0;
-      return acc + votes;
-    }, 0);
+    const voteCount = blockchainService.getVoteCount(electionId, candidate.id);
 
     const percentage =
       totalVote > 0 ? ((voteCount / totalVote) * 100).toFixed(1) : "0.0";
@@ -183,6 +171,31 @@ function readData(filePath) {
   }
 }
 
+const getVoteCount = (electionId, candidateId) => {
+  const blockchainData = readData(BLOCKCHAIN_FILE);
+
+  const hashedElectionId = crypto
+    .createHash("sha256")
+    .update(electionId)
+    .digest("hex");
+
+  const hashedCandidateId = crypto
+    .createHash("sha256")
+    .update(candidateId)
+    .digest("hex");
+
+  const voteCount = blockchainData.blocks?.reduce((acc, block) => {
+    const votes =
+      block.transactions?.filter(
+        (tx) =>
+          tx.electionId === hashedElectionId && tx.vote === hashedCandidateId
+      ).length || 0;
+    return acc + votes;
+  }, 0);
+
+  return voteCount;
+};
+
 function getVotingCountdown(endDate) {
   const now = new Date();
   const end = new Date(endDate);
@@ -206,4 +219,5 @@ module.exports = {
   getVoterInfo,
   submitVote,
   getResult,
+  getVoteCount,
 };
