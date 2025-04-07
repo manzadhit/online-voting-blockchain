@@ -6,9 +6,7 @@ const catchAsync = require("../utils/catchAsync");
 
 const getActiveElections = catchAsync(async (req, res) => {
   const elections = await votingService.getActiveElections();
-  const allVoter = (await authService.getAllStudents()).length
-  console.log(allVoter, "tes");
-  
+  const allVoter = (await authService.getAllStudents()).length  
   
   return res.status(httpStatus.OK).send({
     status: httpStatus.OK,

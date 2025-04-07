@@ -475,6 +475,8 @@
             } else {
               $(".status-indicator").css("background-color", "#ef4444");
               $(".status-text").text("INVALID ✗").css("color", "#ef4444");
+
+              $(`.block[data-block-number="${blockNumber}"]`).addClass("block-invalid");
             }
           },
           error: function (error) {

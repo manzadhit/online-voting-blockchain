@@ -164,4 +164,5 @@ module.exports = {
   verifyBlockIntegrity,
   createBlock,
   initializeBlockchain,
+  calculateBlockHash,
 };

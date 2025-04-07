@@ -130,7 +130,7 @@ const getResult = async (electionId) => {
   });
 
   const results = candidates.map((candidate) => {
-    const voteCount = blockchainService.getVoteCount(electionId, candidate.id);
+    const voteCount = getVoteCount(electionId, candidate.id);
 
     const percentage =
       totalVote > 0 ? ((voteCount / totalVote) * 100).toFixed(1) : "0.0";

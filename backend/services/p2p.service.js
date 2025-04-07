@@ -2,6 +2,8 @@
 const socketIo = require("socket.io");
 const { getLocalIpAddress } = require("../utils/networkUtils");
 const blockchainService = require("./blockchain.service");
+const fs = require("fs");
+const path = require("path");
 
 // Menyimpan instance
 let io = null;
@@ -25,7 +27,7 @@ const init = (server) => {
     });
 
     // Menangani blok baru dari peer lain
-    socket.on("NEW_BLOCK", (block) => {
+    socket.on("NEW_BLOCK", async (block) => {
       console.log(
         `Menerima blok baru dari peer, blockNumber: ${block.blockNumber}`
       );
@@ -34,7 +36,7 @@ const init = (server) => {
       const isValid = isValidNewBlock(block);
 
       if (isValid) {
-        const blockchainData = blockchainService.getBlocks();
+        const blockchainData = await blockchainService.getBlocks();
         blockchainData.blocks.push(block);
 
         // Simpan blockchain yang diperbarui
@@ -66,10 +68,10 @@ const init = (server) => {
 };
 
 // Fungsi untuk validasi blok baru
-const isValidNewBlock = (newBlock) => {
-  const blockchainData = blockchainService.getBlocks();
+const isValidNewBlock = async (newBlock) => {
+  const blockchainData = await blockchainService.getBlocks();
   const blocks = blockchainData.blocks;
-
+  
   if (blocks.length === 0) {
     // Jika blockchain kosong, validasi genesis block
     return newBlock.blockNumber === 0;
@@ -113,7 +115,7 @@ const connectToPeer = (peerAddress) => {
     socket.emit("REGISTER_NODE", { nodeId });
 
     // Menangani event blok baru
-    socket.on("NEW_BLOCK", (block) => {
+    socket.on("NEW_BLOCK", async (block) => {
       console.log(
         `Menerima blok baru dari ${peerAddress}, blockNumber: ${block.blockNumber}`
       );
@@ -122,7 +124,7 @@ const connectToPeer = (peerAddress) => {
       const isValid = isValidNewBlock(block);
 
       if (isValid) {
-        const blockchainData = blockchainService.getBlocks();
+        const blockchainData = await blockchainService.getBlocks();
         blockchainData.blocks.push(block);
 
         // Simpan blockchain yang diperbarui
