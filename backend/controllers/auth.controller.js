@@ -22,10 +22,10 @@ const getStudentByNIM = catchAsync(async (req, res) => {
 });
 
 const createStudent = catchAsync(async (req, res) => {
-  const { nim, nama, faculty, password } = req.body;
+  const { nim, name, faculty, password } = req.body;
   const newStudent = await studentService.createStudent(
     nim,
-    nama,
+    name,
     faculty,
     password
   );

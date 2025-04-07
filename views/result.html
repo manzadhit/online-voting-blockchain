@@ -365,11 +365,14 @@
           <li><a href="blockchain-explorer.html">Blockchain Explorer</a></li>
           <li><a href="voting.html">Vote Now</a></li>
           <li><a href="result.html">Hasil Voting</a></li>
+          <li><a href="#" id="logoutBtn">Logout</a></li>
         </ul>
       </nav>
     </header>
     <div class="container">
-      <h2 class="section-title election-name">Hasil Voting Pemilihan Kepala Daerah 2025</h2>
+      <h2 class="section-title election-name">
+        Hasil Voting Pemilihan Kepala Daerah 2025
+      </h2>
 
       <div class="voting-info-panel">
         <div class="voting-stats">
@@ -404,13 +407,13 @@
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </div>
     </div>
   </body>
+  <script src="./login.js"></script>
   <script>
     $(document).ready(function () {
       const electionId = localStorage.getItem("electionId"); // Ganti dengan ID sesuai kebutuhan
@@ -423,7 +426,7 @@
           const data = response.data;
 
           // Tampilkan statistik voting
-          $(".election-name").text(data.electionName)
+          $(".election-name").text(data.electionName);
           $(".stat-box").eq(0).find(".stat-value").text(data.totalVote);
           $(".stat-box").eq(1).find(".stat-value").text(data.totalVoter);
           $(".stat-box")

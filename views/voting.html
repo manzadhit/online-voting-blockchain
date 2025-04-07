@@ -603,6 +603,7 @@
           <li><a href="blockchain-explorer.html">Blockchain Explorer</a></li>
           <li><a href="voting.html">Vote Now</a></li>
           <li><a href="result.html">Hasil Voting</a></li>
+          <li><a href="#" id="logoutBtn">Logout</a></li>
         </ul>
       </nav>
     </header>
@@ -863,11 +864,11 @@
       </div>
     </footer>
   </body>
+  <script src="./login.js"></script>
   <script>
     const userLogin = JSON.parse(localStorage.getItem("userData"));
     const voterId = userLogin.id;
     console.log(userLogin);
-    
 
     if (userLogin) {
       const initials = userLogin.name
@@ -893,7 +894,7 @@
           if (response.status === 200) {
             const election = response.data[0];
             electionId = election.id;
-            localStorage.setItem('electionId', electionId);
+            localStorage.setItem("electionId", electionId);
             const endDate = new Date(election.endDate);
             const today = new Date();
 
@@ -927,9 +928,7 @@
           <div class="candidate-card" data-candidate-id="${candidate.id}">
             <div class="candidate-wrapper">
               <div class="candidate-photos">
-                <div class="candidate-photo">${
-                  candidate.mainInitials
-                }</div>
+                <div class="candidate-photo">${candidate.mainInitials}</div>
                 <div class="candidate-photo deputy">${
                   candidate.deputyInitials
                 }</div>
@@ -937,9 +936,7 @@
               <div class="candidate-info">
                 <div class="candidate-pair">${candidate.mainName.trim()} & ${candidate.deputyName.trim()}</div>
                 <div class="candidate-faculty">
-                  ${candidate.mainFaculty} & ${
-                candidate.deputyFaculty
-              }
+                  ${candidate.mainFaculty} & ${candidate.deputyFaculty}
                 </div>
               </div>
               <div class="candidate-select"></div>
