@@ -627,16 +627,7 @@
         </p>
 
         <div class="voting-container">
-          <div class="steps-container">
-            <div class="vote-step active">
-              <div class="step-number">1</div>
-              <div class="step-text">Pilih Kandidat</div>
-            </div>
-            <div class="vote-step">
-              <div class="step-number">2</div>
-              <div class="step-text">Konfirmasi Suara</div>
-            </div>
-          </div>
+
 
           <div class="election-info">
             <h3>
@@ -675,7 +666,7 @@
                 </svg>
                 <!-- Waktu tersisa: 3 hari -->
               </div>
-              <div class="election-meta-item">
+              <div class="election-meta-item total-pemilih">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -690,7 +681,7 @@
                   <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
-                Total pemilih: 5,328
+                <!-- Total pemilih: 5,328 -->
               </div>
             </div>
           </div>
@@ -733,7 +724,7 @@
             </div>
           </div>
 
-          <div class="encryption-info">
+          <!-- <div class="encryption-info">
             <h4>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -758,7 +749,7 @@
               Enkripsi: ECDSA P-256 Hash: SHA-256 Blockchain:
               Ethereum-compatible
             </div>
-          </div>
+          </div> -->
 
           <div class="submit-vote" type="button">
             <button type="button" class="btn btn-primary vote-btn">
@@ -893,6 +884,8 @@
         success: function (response) {
           if (response.status === 200) {
             const election = response.data[0];
+            console.log(election);
+            
             electionId = election.id;
             localStorage.setItem("electionId", electionId);
             const endDate = new Date(election.endDate);
@@ -915,6 +908,9 @@
     `);
             $(".waktu-tersisa").html(`
       <svg ...>...</svg> Waktu tersisa: ${diffDays} hari
+    `);
+            $(".total-pemilih").html(`
+      <svg ...>...</svg> Total Pemilih: ${response.data.allVoter}
     `);
 
             const candidates = response.data[0].candidates;
@@ -985,6 +981,7 @@
           contentType: "application/json",
           data: JSON.stringify(payload),
           success: function (res) {
+            window.location.href = "result.html";
             alert("Suara berhasil dikirim!");
             // redirect atau disable tombol voting bisa ditambahkan
           },

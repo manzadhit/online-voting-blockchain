@@ -441,6 +441,7 @@
           const tbody = $(".detail-table tbody");
           tbody.empty(); // kosongkan isi tabel sebelum diisi
 
+          data.candidates.sort((a, b) => b.voteCount - a.voteCount);
           data.candidates.forEach((candidate, index) => {
             const row = `
             <tr>

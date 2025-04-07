@@ -1,15 +1,19 @@
 // controllers/votingController.js
 const httpStatus = require("http-status");
 const votingService = require("../services/voting.service");
+const authService = require("../services/auth.service");
 const catchAsync = require("../utils/catchAsync");
 
 const getActiveElections = catchAsync(async (req, res) => {
   const elections = await votingService.getActiveElections();
+  const allVoter = (await authService.getAllStudents()).length
+  console.log(allVoter, "tes");
+  
   
   return res.status(httpStatus.OK).send({
     status: httpStatus.OK,
     message: "Active elections retrieved successfully",
-    data: elections,
+    data: {...elections, allVoter},
   });
 });
 

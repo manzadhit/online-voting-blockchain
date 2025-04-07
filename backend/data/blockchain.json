@@ -16,40 +16,6 @@
       ],
       "nonce": 426160,
       "hash": "3a9a8f8126e0035c7c09760797d87d6e2800f98380d557fa6f59302da4e395f7"
-    },
-    {
-      "blockNumber": 1,
-      "timestamp": "2025-04-06T09:41:55.212Z",
-      "previousHash": "3a9a8f8126e0035c7c09760797d87d6e2800f98380d557fa6f59302da4e395f7",
-      "transactions": [
-        {
-          "id": "0xf056",
-          "timestamp": "2025-04-06T09:41:55.212Z",
-          "voterId": "1450dbd7fa3bc2c8d1f6f70f1a4fd5ca391d77bcd81250c6e12d40b64f7e460d",
-          "vote": "39a839b7b10024553b657ce56f69dab119fcc0ccfa56a2be0022cbc649a88121",
-          "electionId": "0d1d54948c86449866ad0841486da988bda497f5e14ede1633e5090f286bb416",
-          "signature": "77024d1780"
-        }
-      ],
-      "nonce": 329084,
-      "hash": "e75e2625c5143f0289a9d0b22f257e71fd4c32fcae31732da23393fd35ee615b"
-    },
-    {
-      "blockNumber": 2,
-      "timestamp": "2025-04-06T13:21:50.732Z",
-      "previousHash": "e75e2625c5143f0289a9d0b22f257e71fd4c32fcae31732da23393fd35ee615b",
-      "transactions": [
-        {
-          "id": "0xdc97",
-          "timestamp": "2025-04-06T13:21:50.731Z",
-          "voterId": "8de4786f75a65508b0daac7fd7462d488d8e1d304842a94a83503ed85e3cab37",
-          "vote": "dbe9716c2cc94e8b7fd43be9644b035338d749857fa96e61d1fd01c20ecf4f82",
-          "electionId": "2884ab02f636dde8e31f53eaeab4799d75be93888708495f20efce446ae6db45",
-          "signature": "0f7034eae7"
-        }
-      ],
-      "nonce": 449106,
-      "hash": "8a14c49a48f64ef3f8d0070217d67dd9bb14cd11e355bed4b9340ccbd680975d"
     }
   ]
 }
