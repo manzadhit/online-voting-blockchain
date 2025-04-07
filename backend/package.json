@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,8 @@
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "eslint": "^9.24.0",
     "nodemon": "^3.1.9"
   }
 }

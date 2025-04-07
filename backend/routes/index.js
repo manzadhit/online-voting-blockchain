@@ -5,6 +5,7 @@ const voteRoutes = require("./vote.route");
 const electionRoute = require("./election.route");
 const candidateRoute = require("./candidate.route");
 const userRoute = require("./user.route");
+const peerRoute = require("./peer.route");
 
 const router = express.Router();
 
@@ -32,6 +33,10 @@ const Routes = [
   {
     path: "/user",
     route: userRoute,
+  },
+  {
+    path: "/peers",
+    route: peerRoute,
   },
 ];
 

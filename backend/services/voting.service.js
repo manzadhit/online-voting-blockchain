@@ -90,6 +90,9 @@ const submitVote = async (voterId, candidateId, electionId) => {
 
   const block = await blockchainService.createBlock(transaction);
 
+  const p2pService = require("./p2p.service");
+  p2pService.broadcastNewBlock(block);
+
   return {
     transaction,
     block: {
