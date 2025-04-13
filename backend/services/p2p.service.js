@@ -26,28 +26,77 @@ const init = (server) => {
       console.log(`Node ${peerId} bergabung dalam jaringan`);
     });
 
-    // Menangani blok baru dari peer lain
+    // First handler (server-side connections)
     socket.on("NEW_BLOCK", async (block) => {
       console.log(
         `Menerima blok baru dari peer, blockNumber: ${block.blockNumber}`
       );
 
       // Validasi dan tambahkan blok ke blockchain
-      const isValid = isValidNewBlock(block);
+      const isValid = await isValidNewBlock(block);
 
       if (isValid) {
         const blockchainData = await blockchainService.getBlocks();
-        blockchainData.blocks.push(block);
 
-        // Simpan blockchain yang diperbarui
-        // Perhatikan ini tergantung pada implementasi saveBlockchain di service Anda
-        // Mungkin perlu tambahkan fungsi khusus di blockchainService
-        fs.writeFileSync(
-          path.join(__dirname, "../data/blockchain.json"),
-          JSON.stringify(blockchainData, null, 2)
+        // Check if we already have this block to prevent infinite propagation
+        const blockExists = blockchainData.blocks.some(
+          (b) => b.hash === block.hash
         );
 
-        console.log(`Blok baru ditambahkan: ${block.blockNumber}`);
+        if (!blockExists) {
+          blockchainData.blocks.push(block);
+
+          // Simpan blockchain yang diperbarui
+          fs.writeFileSync(
+            path.join(__dirname, "../data/blockchain.json"),
+            JSON.stringify(blockchainData, null, 2)
+          );
+
+          console.log(`Blok baru ditambahkan: ${block.blockNumber}`);
+
+          // Propagate the block to all other connected peers
+          broadcastNewBlock(block);
+        } else {
+          console.log(`Blok ${block.blockNumber} sudah ada dalam blockchain`);
+        }
+      } else {
+        console.log(`Blok ditolak: tidak valid`);
+      }
+    });
+
+    // Second handler (client-side connections)
+    socket.on("NEW_BLOCK", async (block) => {
+      console.log(
+        `Menerima blok baru dari ${peerAddress}, blockNumber: ${block.blockNumber}`
+      );
+
+      // Validasi dan tambahkan blok
+      const isValid = await isValidNewBlock(block);
+
+      if (isValid) {
+        const blockchainData = await blockchainService.getBlocks();
+
+        // Check if we already have this block to prevent infinite propagation
+        const blockExists = blockchainData.blocks.some(
+          (b) => b.hash === block.hash
+        );
+
+        if (!blockExists) {
+          blockchainData.blocks.push(block);
+
+          // Simpan blockchain yang diperbarui
+          fs.writeFileSync(
+            path.join(__dirname, "../data/blockchain.json"),
+            JSON.stringify(blockchainData, null, 2)
+          );
+
+          console.log(`Blok baru ditambahkan: ${block.blockNumber}`);
+
+          // Propagate the block to all other connected peers
+          broadcastNewBlock(block);
+        } else {
+          console.log(`Blok ${block.blockNumber} sudah ada dalam blockchain`);
+        }
       } else {
         console.log(`Blok ditolak: tidak valid`);
       }
