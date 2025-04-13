@@ -20,6 +20,9 @@ const getActiveElections = async () => {
     include: {
       candidates: true,
     },
+    orderBy: {
+      endDate: "asc", // Mengurutkan secara ascending (dari terdekat ke terjauh)
+    },
   });
 
   return elections;
