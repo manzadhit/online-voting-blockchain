@@ -107,28 +107,38 @@ const calculateBlockHash = (block) => {
 };
 
 // Verify the integrity of a block
-// Verify the integrity of a block
 const verifyBlockIntegrity = (blockNumber) => {
   const blockchain = readBlockchainData();
   const currentBlock = blockchain.blocks.find((b) => b.blockNumber === blockNumber);
-
-  // 1. Verifikasi hash block saat ini
-  const isCurrentHashValid =
-    calculateBlockHash(currentBlock) === currentBlock.hash;
-  if (!isCurrentHashValid) return false;
-
-  // 2. Verifikasi link ke block sebelumnya (kecuali genesis block)
-  if (blockNumber > 1) {
-    const previousBlock = blockchain.blocks.find(
-      (b) => b.blockNumber === blockNumber - 1
-    );
-    const isLinkValid = currentBlock.previousHash === previousBlock.hash;
-    if (!isLinkValid) return false;
+  
+  if (!currentBlock) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Block not found");
   }
 
-  return true; // Semua valid
-};
+  // For genesis block (block 0) or block 1, just verify its own hash
+  if (blockNumber <= 1) {
+    return calculateBlockHash(currentBlock) === currentBlock.hash;
+  }
 
+  // For blocks after the genesis, verify the entire chain up to this block
+  // Start from block 1 (after genesis)
+  for (let i = 1; i <= blockNumber; i++) {
+    const block = blockchain.blocks.find((b) => b.blockNumber === i);
+    const prevBlock = blockchain.blocks.find((b) => b.blockNumber === i - 1);
+    
+    // Check if block hash is valid
+    if (calculateBlockHash(block) !== block.hash) {
+      return false;
+    }
+    
+    // Check if link to previous block is valid
+    if (block.previousHash !== prevBlock.hash) {
+      return false;
+    }
+  }
+
+  return true; // All blocks in the chain up to this one are valid
+};
 // Create a new block with the given transaction
 const createBlock = async (transaction) => {
   const blockchain = readBlockchainData();
