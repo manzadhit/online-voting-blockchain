@@ -354,6 +354,23 @@
       .verification-badge svg {
         margin-right: 5px;
       }
+
+      .election-selector {
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .election-dropdown {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #e2e8f0;
+        font-size: 1rem;
+        min-width: 250px;
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
@@ -370,9 +387,13 @@
       </nav>
     </header>
     <div class="container">
-      <h2 class="section-title election-name">
-        Hasil Voting Pemilihan Kepala Daerah 2025
-      </h2>
+      <div class="election-selector">
+        <label for="electionSelect">Pilih Pemilihan:</label>
+        <select id="electionSelect" class="election-dropdown">
+          <option value="" disabled selected>-- Pilih Pemilihan --</option>
+        </select>
+      </div>
+      <h2 class="section-title election-name"></h2>
 
       <div class="voting-info-panel">
         <div class="voting-stats">
@@ -416,53 +437,93 @@
   <script src="./login.js"></script>
   <script>
     $(document).ready(function () {
-      const electionId = localStorage.getItem("electionId"); // Ganti dengan ID sesuai kebutuhan
-      const url = `http://localhost:3000/voting/result/${electionId}`;
-
+      // Fetch active elections first
       $.ajax({
-        url: url,
+        url: "http://localhost:3000/voting/elections/active",
         method: "GET",
         success: function (response) {
-          const data = response.data;
+          const activeElections = response.data.elections;
 
-          // Tampilkan statistik voting
-          $(".election-name").text(data.electionName);
-          $(".stat-box").eq(0).find(".stat-value").text(data.totalVote);
-          $(".stat-box").eq(1).find(".stat-value").text(data.totalVoter);
-          $(".stat-box")
-            .eq(2)
-            .find(".stat-value")
-            .text(`${data.participationRate}%`);
-
-          // Countdown
-          $(".countdown-value").text(data.votingCountDown);
-
-          // Render tabel hasil voting
-          const tbody = $(".detail-table tbody");
-          tbody.empty(); // kosongkan isi tabel sebelum diisi
-
-          data.candidates.sort((a, b) => b.voteCount - a.voteCount);
-          data.candidates.forEach((candidate, index) => {
-            const row = `
-            <tr>
-              <td>
-                <span class="candidate-color color-${index + 1}"></span> ${
-              candidate.mainName
-            }
-              </td>
-              <td>${candidate.voteCount}</td>
-              <td>${candidate.percentage}%</td>
-              <td>${candidate.status}</td>
-            </tr>
-          `;
-            tbody.append(row);
+          // Populate dropdown with active elections
+          const electionSelect = $("#electionSelect");
+          activeElections.forEach((election) => {
+            electionSelect.append(
+              `<option value="${election.id}">${election.name}</option>`
+            );
           });
+
+          // If there are active elections, load the first one
+          if (activeElections.length > 0) {
+            loadElectionResults(activeElections[0].id);
+          }
+
+          // Set from localStorage if available
+          const savedElectionId = localStorage.getItem("electionId");
+          if (savedElectionId) {
+            electionSelect.val(savedElectionId);
+            loadElectionResults(savedElectionId);
+          }
         },
         error: function (xhr, status, error) {
-          console.error("Gagal mengambil data hasil voting:", error);
-          alert("Gagal memuat hasil voting. Silakan coba lagi nanti.");
+          console.error("Gagal mengambil data pemilihan aktif:", error);
+          alert("Gagal memuat daftar pemilihan. Silakan coba lagi nanti.");
         },
       });
+
+      // Handle dropdown change
+      $("#electionSelect").change(function () {
+        const selectedElectionId = $(this).val();
+        localStorage.setItem("electionId", selectedElectionId);
+        loadElectionResults(selectedElectionId);
+      });
+
+      // Function to load election results
+      function loadElectionResults(electionId) {
+        $.ajax({
+          url: `http://localhost:3000/voting/result/${electionId}`,
+          method: "GET",
+          success: function (response) {
+            const data = response.data;
+
+            // Tampilkan statistik voting
+            $(".election-name").text(data.electionName);
+            $(".stat-box").eq(0).find(".stat-value").text(data.totalVote);
+            $(".stat-box").eq(1).find(".stat-value").text(data.totalVoter);
+            $(".stat-box")
+              .eq(2)
+              .find(".stat-value")
+              .text(`${data.participationRate}%`);
+
+            // Countdown
+            $(".countdown-value").text(data.votingCountDown);
+
+            // Render tabel hasil voting
+            const tbody = $(".detail-table tbody");
+            tbody.empty(); // kosongkan isi tabel sebelum diisi
+
+            data.candidates.sort((a, b) => b.voteCount - a.voteCount);
+            data.candidates.forEach((candidate, index) => {
+              const row = `
+          <tr>
+            <td>
+              <span class="candidate-color color-${index + 1}"></span> ${
+                candidate.mainName
+              } & ${candidate.deputyName}
+            </td>
+            <td>${candidate.voteCount}</td>
+            <td>${candidate.percentage}%</td>
+            <td>${candidate.status}</td>
+          </tr>
+        `;
+              tbody.append(row);
+            });
+          },
+          error: function (xhr, status, error) {
+            console.error("Gagal mengambil data hasil voting:", error);
+            alert("Gagal memuat hasil voting. Silakan coba lagi nanti.");
+          },
+        });
+      }
     });
   </script>
 </html>

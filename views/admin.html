@@ -533,41 +533,10 @@
                   <th>Nama Kandidat</th>
                   <th>Wakil Kandidat</th>
                   <th>Pemilihan</th>
-                  <th>Jumlah Suara</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    Dewi Kartika (DK)<br /><small>Fakultas Kedokteran</small>
-                  </td>
-                  <td>
-                    Rahmat Hidayat (RH)<br /><small
-                      >Fakultas Ilmu Komputer</small
-                    >
-                  </td>
-                  <td>Pemilihan Ketua BEM</td>
-                  <td>42</td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn btn-small btn-edit">Edit</button>
-                      <button class="btn btn-small btn-delete">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Ahmad Fauzi (AF)<br /><small>Fakultas Ekonomi</small></td>
-                  <td>Siti Aisyah (SA)<br /><small>Fakultas Hukum</small></td>
-                  <td>Pemilihan Ketua BEM</td>
-                  <td>37</td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn btn-small btn-edit">Edit</button>
-                      <button class="btn btn-small btn-delete">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -723,35 +692,10 @@
                   <th>NIM</th>
                   <th>Nama</th>
                   <th>Fakultas</th>
-                  <th>Status Voting</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>E1E123001</td>
-                  <td>Siti Testing</td>
-                  <td>Teknik</td>
-                  <td>Belum Memilih</td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn btn-small btn-edit">Edit</button>
-                      <button class="btn btn-small btn-delete">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>F1F456002</td>
-                  <td>Budi Santoso</td>
-                  <td>Ekonomi</td>
-                  <td>Sudah Memilih</td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn btn-small btn-edit">Edit</button>
-                      <button class="btn btn-small btn-delete">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -1085,7 +1029,6 @@
                 candidate.deputyFaculty
               }</small></td>
           <td>${electionName}</td>  
-          <td>${candidate.voteCount || 0}</td>
           <td>
             <div class="action-buttons">
               <button class="btn btn-small btn-edit">Edit</button>
@@ -1113,16 +1056,12 @@
           $("#students-table tbody").empty();
 
           studentsResult.data.forEach((student) => {
-            const voteStatus = student.hasVoted
-              ? "Sudah Memilih"
-              : "Belum Memilih";
 
             const newRow = `
       <tr data-id="${student.nim}">
         <td>${student.nim}</td>
         <td>${student.name}</td>
         <td>${student.faculty}</td>
-        <td>${voteStatus}</td>
         <td>
           <div class="action-buttons">
             <button class="btn btn-small btn-edit">Edit</button>
@@ -1778,14 +1717,12 @@
 
       // Helper function to add a student to the table
       async function addStudentToTable(student) {
-        const voteStatus = student.hasVoted ? "Sudah Memilih" : "Belum Memilih";
 
         const newRow = `
   <tr data-id="${student.nim}">
     <td>${student.nim}</td>
     <td>${student.name}</td>
     <td>${student.faculty}</td>
-    <td>${voteStatus}</td>
     <td>
       <div class="action-buttons">
         <button class="btn btn-small btn-edit">Edit</button>

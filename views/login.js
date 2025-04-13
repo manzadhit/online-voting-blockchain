@@ -25,8 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Jika di halaman student/voter, pastikan user adalah student (memiliki nim)
     if (
-      currentPage.includes("voting.html") ||
-      currentPage.includes("result.html")
+      currentPage.includes("voting.html")
     ) {
       if (!userData.nim) {
         window.location.href = "login.html";
