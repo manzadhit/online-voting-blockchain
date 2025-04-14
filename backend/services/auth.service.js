@@ -84,6 +84,30 @@ const loginStudent = async (nim, password) => {
   return student;
 };
 
+const resetPassword = async (nim, newPassword) => {
+  // Mencari mahasiswa berdasarkan nim
+  const student = await prisma.student.findUnique({
+    where: { nim },
+  });
+
+  if (!student) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Mahasiswa tidak ditemukan.");
+  }
+
+  // Hash password baru
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // Update password mahasiswa
+  const updatedStudent = await prisma.student.update({
+    where: { nim },
+    data: {
+      password: hashedPassword,
+    },
+  });
+
+  return updatedStudent;
+};
+
 module.exports = {
   getAllStudents,
   getStudentByNIM,
@@ -91,4 +115,5 @@ module.exports = {
   updateStudent,
   deleteStudent,
   loginStudent,
+  resetPassword,
 };

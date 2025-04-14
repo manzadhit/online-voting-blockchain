@@ -72,6 +72,24 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
+const resetPassword = catchAsync(async (req, res) => {
+  const { nim, newPassword } = req.body;
+
+  if (!nim || !newPassword) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "NIM dan password baru diperlukan."
+    );
+  }
+
+  await studentService.resetPassword(nim, newPassword);
+
+  return res.status(httpStatus.OK).send({
+    status: httpStatus.OK,
+    message: "Password berhasil direset.",
+  });
+});
+
 module.exports = {
   getAllStudents,
   getStudentByNIM,
@@ -79,4 +97,5 @@ module.exports = {
   updateStudent,
   deleteStudent,
   login,
+  resetPassword,
 };
