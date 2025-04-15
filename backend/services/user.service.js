@@ -10,7 +10,7 @@ const httpStatus = require("http-status");
  */
 const createUser = async (userBody) => {
   // Cek apakah username sudah ada
-  const existingUser = await prisma.user.findUnique({
+  const existingUser = await prisma.admin.findUnique({
     where: { username: userBody.username },
   });
 
@@ -23,7 +23,7 @@ const createUser = async (userBody) => {
   const hashedPassword = await bcrypt.hash(userBody.password, salt);
 
   // Buat user baru
-  const user = await prisma.user.create({
+  const user = await prisma.admin.create({
     data: {
       username: userBody.username,
       password: hashedPassword,
@@ -42,7 +42,7 @@ const createUser = async (userBody) => {
  */
 const loginUser = async (username, password) => {
   // Mencari user berdasarkan username
-  const user = await prisma.user.findUnique({
+  const user = await prisma.admin.findUnique({
     where: { username },
   });
 
@@ -68,7 +68,7 @@ const loginUser = async (username, password) => {
  * @returns {Promise<User[]>}
  */
 const getUsers = async () => {
-  return prisma.user.findMany();
+  return prisma.admin.findMany();
 };
 
 /**
@@ -77,7 +77,7 @@ const getUsers = async () => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.admin.findUnique({
     where: { id }});
 
   if (!user) {
@@ -95,7 +95,7 @@ const getUserById = async (id) => {
  */
 const updateUser = async (id, updateBody) => {
   // Cek apakah user ada
-  const user = await prisma.user.findUnique({
+  const user = await prisma.admin.findUnique({
     where: { id },
   });
 
@@ -105,7 +105,7 @@ const updateUser = async (id, updateBody) => {
 
   // Cek jika mengubah username, pastikan username baru tidak digunakan
   if (updateBody.username && updateBody.username !== user.username) {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.admin.findUnique({
       where: { username: updateBody.username },
     });
 
@@ -121,7 +121,7 @@ const updateUser = async (id, updateBody) => {
   }
 
   // Update user
-  return prisma.user.update({
+  return prisma.admin.update({
     where: { id },
     data: updateBody
   });
@@ -134,7 +134,7 @@ const updateUser = async (id, updateBody) => {
  */
 const deleteUser = async (id) => {
   // Cek apakah user ada
-  const user = await prisma.user.findUnique({
+  const user = await prisma.admin.findUnique({
     where: { id },
   });
 
@@ -143,7 +143,7 @@ const deleteUser = async (id) => {
   }
 
   // Hapus user
-  return prisma.user.delete({
+  return prisma.admin.delete({
     where: { id },
   });
 };

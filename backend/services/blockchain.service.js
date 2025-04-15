@@ -46,7 +46,6 @@ const createGenesisBlock = () => {
     voterId: "0x0",
     vote: "Genesis Block",
     electionId: "0x0",
-    signature: "0x0",
   };
 
   const genesisBlock = {

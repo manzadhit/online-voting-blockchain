@@ -88,7 +88,6 @@ const submitVote = async (voterId, candidateId, electionId) => {
     voterId: hashedVoterId,
     vote: crypto.createHash("sha256").update(candidateId).digest("hex"),
     electionId: hashedElectionId,
-    signature: crypto.randomBytes(5).toString("hex"),
   };
 
   const block = await blockchainService.createBlock(transaction);
