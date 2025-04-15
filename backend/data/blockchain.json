@@ -15,22 +15,6 @@
       ],
       "nonce": 270561,
       "hash": "25d1b21f3c2c6de38d07d94f5422a3257b1739898b0b5ea742217497b1ac485f"
-    },
-    {
-      "blockNumber": 1,
-      "timestamp": "2025-04-15T02:00:02.186Z",
-      "previousHash": "25d1b21f3c2c6de38d07d94f5422a3257b1739898b0b5ea742217497b1ac485f",
-      "transactions": [
-        {
-          "id": "0x1ef3",
-          "timestamp": "2025-04-15T02:00:02.185Z",
-          "voterId": "ab225df29e7df8d088c4f8557c14902506e943dfef1f02fdbccaf79d44138351",
-          "vote": "dbe9716c2cc94e8b7fd43be9644b035338d749857fa96e61d1fd01c20ecf4f82",
-          "electionId": "2884ab02f636dde8e31f53eaeab4799d75be93888708495f20efce446ae6db45"
-        }
-      ],
-      "nonce": 723005,
-      "hash": "a870d9534541084ea25a04009e95c307ef6a163c535fde1dc46c6301fe74af4e"
     }
   ]
 }
