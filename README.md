@@ -30,16 +30,16 @@ Ikuti langkah-langkah berikut untuk menyiapkan dan menjalankan aplikasi secara l
 
 ### Pengaturan Frontend
 
-Frontend terdiri dari file HTML yang terletak di folder `views`. Untuk menjalankannya:
+Frontend terdiri dari file HTML yang terletak di folder `frontend`. Untuk menjalankannya:
 
 1. Buka file HTML menggunakan Live Server.
    - Jika Anda menggunakan Visual Studio Code, Anda bisa menginstal ekstensi "Live Server"
-   - Klik kanan pada file HTML di folder `views` dan pilih "Open with Live Server"
+   - Klik kanan pada file HTML di folder `frontend` dan pilih "Open with Live Server"
 
 ## Struktur Proyek
 
 - `backend/`: Berisi kode sisi server dan endpoint API
-- `views/`: Berisi file HTML untuk antarmuka frontend
+- `frontend/`: Berisi file HTML untuk antarmuka frontend
 
 ## Persyaratan
 
