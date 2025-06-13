@@ -1,4 +1,4 @@
-const studentService = require("../services/auth.service");
+const studentService = require("../services/student.service");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
@@ -8,6 +8,16 @@ const getAllStudents = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({
     status: "success",
     data: students,
+  });
+});
+
+const getStudentById = catchAsync(async (req, res) => {
+  const studentId = parseInt(req.params.studentId, 10);
+  const student = await studentService.getStudentById(studentId);
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: student,
   });
 });
 
@@ -50,6 +60,22 @@ const updateStudent = catchAsync(async (req, res) => {
   });
 });
 
+const updateStudentById = catchAsync(async (req, res) => {
+  const studentId = parseInt(req.params.studentId, 10);
+  const updatedData = req.body;
+
+  const updatedStudent = await studentService.updateStudentById(
+    studentId,
+    updatedData
+  );
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    message: "Student updated successfully",
+    data: updatedStudent,
+  });
+});
+
 const deleteStudent = catchAsync(async (req, res) => {
   const { nim } = req.params;
   await studentService.deleteStudent(nim);
@@ -60,9 +86,19 @@ const deleteStudent = catchAsync(async (req, res) => {
   });
 });
 
+const deleteStudentById = catchAsync(async (req, res) => {
+  const studentId = parseInt(req.params.studentId, 10);
+  await studentService.deleteStudentById(studentId);
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    message: "Student deleted successfully",
+  });
+});
+
 const login = catchAsync(async (req, res) => {
   const { nim, password } = req.body;
-  
+
   const student = await studentService.loginStudent(nim, password);
 
   return res.status(httpStatus.OK).send({
@@ -73,16 +109,16 @@ const login = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  const { nim, newPassword } = req.body;
+  const { nim, oldPassword, newPassword } = req.body;
 
-  if (!nim || !newPassword) {
+  if (!nim || !oldPassword || !newPassword) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "NIM dan password baru diperlukan."
+      "NIM, password lama, dan password baru diperlukan."
     );
   }
 
-  await studentService.resetPassword(nim, newPassword);
+  await studentService.resetPassword(nim, oldPassword, newPassword);
 
   return res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -92,10 +128,13 @@ const resetPassword = catchAsync(async (req, res) => {
 
 module.exports = {
   getAllStudents,
+  getStudentById,
   getStudentByNIM,
   createStudent,
   updateStudent,
+  updateStudentById,
   deleteStudent,
+  deleteStudentById,
   login,
   resetPassword,
 };

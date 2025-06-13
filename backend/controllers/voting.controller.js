@@ -1,6 +1,6 @@
 const httpStatus = require("http-status");
 const votingService = require("../services/voting.service");
-const authService = require("../services/auth.service");
+const authService = require("../services/student.service");
 const catchAsync = require("../utils/catchAsync");
 
 const getActiveElections = catchAsync(async (req, res) => {

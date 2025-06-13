@@ -4,19 +4,19 @@ const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 
 const getAllStudents = async () => {
-    return await prisma.student.findMany();
+  return await prisma.student.findMany();
 };
 
 const getStudentByNIM = async (nim) => {
-    const student = await prisma.student.findUnique({
-      where: { nim },
-    });
+  const student = await prisma.student.findUnique({
+    where: { nim },
+  });
 
-    if (!student) {
-      throw new ApiError(404, "Student not found");
-    }
+  if (!student) {
+    throw new ApiError(404, "Student not found");
+  }
 
-    return student;
+  return student;
 };
 
 const createStudent = async (nim, name, faculty, password) => {
@@ -66,7 +66,7 @@ const loginStudent = async (nim, password) => {
   const student = await prisma.student.findUnique({
     where: { nim },
   });
-  
+
   if (!student) {
     throw new ApiError(httpStatus.NOT_FOUND, "Mahasiswa tidak ditemukan.");
   }
@@ -84,7 +84,7 @@ const loginStudent = async (nim, password) => {
   return student;
 };
 
-const resetPassword = async (nim, newPassword) => {
+const resetPassword = async (nim, oldPassword, newPassword) => {
   // Mencari mahasiswa berdasarkan nim
   const student = await prisma.student.findUnique({
     where: { nim },
@@ -92,6 +92,26 @@ const resetPassword = async (nim, newPassword) => {
 
   if (!student) {
     throw new ApiError(httpStatus.NOT_FOUND, "Mahasiswa tidak ditemukan.");
+  }
+
+  // Verifikasi password lama
+  const isOldPasswordValid = await bcrypt.compare(
+    oldPassword,
+    student.password
+  );
+
+  if (!isOldPasswordValid) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Password lama tidak benar.");
+  }
+
+  // Pastikan password baru tidak sama dengan password lama
+  const isSamePassword = await bcrypt.compare(newPassword, student.password);
+
+  if (isSamePassword) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Password baru harus berbeda dengan password lama."
+    );
   }
 
   // Hash password baru

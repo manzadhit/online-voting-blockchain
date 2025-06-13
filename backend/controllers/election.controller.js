@@ -50,7 +50,8 @@ const getActiveElections = catchAsync(async (req, res) => {
  * Get election by id
  */
 const getElection = catchAsync(async (req, res) => {
-  const election = await electionService.getElectionById(req.params.electionId);
+  const electionId = parseInt(req.params.electionId, 10);
+  const election = await electionService.getElectionById(electionId);
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -63,8 +64,9 @@ const getElection = catchAsync(async (req, res) => {
  * Update election
  */
 const updateElection = catchAsync(async (req, res) => {
+  const electionId = parseInt(req.params.electionId, 10);
   const election = await electionService.updateElectionById(
-    req.params.electionId,
+    electionId,
     req.body
   );
 
@@ -79,7 +81,8 @@ const updateElection = catchAsync(async (req, res) => {
  * Delete election
  */
 const deleteElection = catchAsync(async (req, res) => {
-  await electionService.deleteElectionById(req.params.electionId);
+  const electionId = parseInt(req.params.electionId, 10);
+  await electionService.deleteElectionById(electionId);
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,

@@ -23,11 +23,6 @@ const createCandidate = async (candidateBody) => {
   });
 };
 
-/**
- * Get all candidates
- * @param {Object} filter - Optional filter
- * @returns {Promise<Array>}
- */
 const getCandidates = async (filter = {}) => {
   return prisma.candidate.findMany({
     where: filter,

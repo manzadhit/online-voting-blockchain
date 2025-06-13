@@ -1,11 +1,16 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
-const candidateService  = require("../services/candidate.service");
+const candidateService = require("../services/candidate.service");
 
 /**
  * Create a new candidate
  */
 const createCandidate = catchAsync(async (req, res) => {
+  // Convert electionId to integer if present
+  if (req.body.electionId) {
+    req.body.electionId = parseInt(req.body.electionId, 10);
+  }
+
   const candidate = await candidateService.createCandidate(req.body);
 
   res.status(httpStatus.CREATED).send({
@@ -21,7 +26,7 @@ const createCandidate = catchAsync(async (req, res) => {
 const getCandidates = catchAsync(async (req, res) => {
   const filter = {};
   if (req.query.electionId) {
-    filter.electionId = req.query.electionId;
+    filter.electionId = parseInt(req.query.electionId, 10);
   }
   const candidates = await candidateService.getCandidates(filter);
 
@@ -36,8 +41,9 @@ const getCandidates = catchAsync(async (req, res) => {
  * Get candidates by election id
  */
 const getCandidatesByElection = catchAsync(async (req, res) => {
+  const electionId = parseInt(req.params.electionId, 10);
   const candidates = await candidateService.getCandidatesByElectionId(
-    req.params.electionId
+    electionId
   );
 
   res.status(httpStatus.OK).send({
@@ -51,9 +57,8 @@ const getCandidatesByElection = catchAsync(async (req, res) => {
  * Get candidate by id
  */
 const getCandidate = catchAsync(async (req, res) => {
-  const candidate = await candidateService.getCandidateById(
-    req.params.candidateId
-  );
+  const candidateId = parseInt(req.params.candidateId, 10);
+  const candidate = await candidateService.getCandidateById(candidateId);
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -66,8 +71,15 @@ const getCandidate = catchAsync(async (req, res) => {
  * Update candidate
  */
 const updateCandidate = catchAsync(async (req, res) => {
+  const candidateId = parseInt(req.params.candidateId, 10);
+
+  // Convert electionId to integer if present in body
+  if (req.body.electionId) {
+    req.body.electionId = parseInt(req.body.electionId, 10);
+  }
+
   const candidate = await candidateService.updateCandidateById(
-    req.params.candidateId,
+    candidateId,
     req.body
   );
 
@@ -82,7 +94,8 @@ const updateCandidate = catchAsync(async (req, res) => {
  * Delete candidate
  */
 const deleteCandidate = catchAsync(async (req, res) => {
-  await candidateService.deleteCandidateById(req.params.candidateId);
+  const candidateId = parseInt(req.params.candidateId, 10);
+  await candidateService.deleteCandidateById(candidateId);
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -94,9 +107,8 @@ const deleteCandidate = catchAsync(async (req, res) => {
  * Vote for a candidate
  */
 const voteCandidate = catchAsync(async (req, res) => {
-  const candidate = await candidateService.updateVoteCount(
-    req.params.candidateId
-  );
+  const candidateId = parseInt(req.params.candidateId, 10);
+  const candidate = await candidateService.updateVoteCount(candidateId);
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,

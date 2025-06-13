@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlockVote - Admin Panel</title>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="./assets/css/admin.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">BlockVote</div>
+      <nav>
+        <ul>
+          <li><a href="#" id="logoutBtn">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="admin-header">
+        <h1 class="admin-title">Panel Admin</h1>
+      </div>
+
+      <div class="admin-tabs">
+        <div class="admin-tab active" data-tab="candidates">Kandidat</div>
+        <div class="admin-tab" data-tab="elections">Pemilihan</div>
+        <div class="admin-tab" data-tab="students">Mahasiswa</div>
+      </div>
+
+      <!-- Candidates Tab -->
+      <div id="candidates-tab" class="tab-content active">
+        <div class="card">
+          <h2 class="card-title">Tambah Kandidat Baru</h2>
+          <div id="candidate-response" class="response-message"></div>
+          <form id="add-candidate-form">
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label">Nama Kandidat Utama</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="mainName"
+                  placeholder="Masukkan nama kandidat utama"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Inisial Kandidat Utama</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="mainInitials"
+                  placeholder="Contoh: DK"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fakultas Kandidat Utama</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="mainFaculty"
+                  placeholder="Contoh: Fakultas Kedokteran"
+                />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label">Nama Wakil Kandidat</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="deputyName"
+                  placeholder="Masukkan nama wakil kandidat"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Inisial Wakil Kandidat</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="deputyInitials"
+                  placeholder="Contoh: RH"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fakultas Wakil Kandidat</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="deputyFaculty"
+                  placeholder="Contoh: Fakultas Ilmu Komputer"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Visi</label>
+              <textarea
+                class="form-input"
+                id="vision"
+                placeholder="Masukkan visi kandidat"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pemilihan</label>
+              <select class="form-select" id="electionId"></select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Tambah Kandidat
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Daftar Kandidat</h2>
+          <div class="table-container">
+            <table id="candidates-table">
+              <thead>
+                <tr>
+                  <th>Nama Kandidat</th>
+                  <th>Wakil Kandidat</th>
+                  <th>Pemilihan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- daftar kandidat -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elections Tab -->
+      <div id="elections-tab" class="tab-content">
+        <div class="card">
+          <h2 class="card-title">Tambah Pemilihan Baru</h2>
+          <div id="election-response" class="response-message"></div>
+          <form id="add-election-form">
+            <div class="form-group">
+              <label class="form-label">Nama Pemilihan</label>
+              <input
+                type="text"
+                class="form-input"
+                id="electionName"
+                placeholder="Contoh: Pemilihan Ketua BEM"
+              />
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label">Tanggal Mulai</label>
+                <input
+                  type="datetime-local"
+                  class="form-input"
+                  id="startDate"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tanggal Selesai</label>
+                <input type="datetime-local" class="form-input" id="endDate" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="isActive">
+                <option value="true">Aktif</option>
+                <option value="false">Tidak Aktif</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Tambah Pemilihan
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Daftar Pemilihan</h2>
+          <div class="table-container">
+            <table id="elections-table">
+              <thead>
+                <tr>
+                  <th>Nama Pemilihan</th>
+                  <th>Tanggal Mulai</th>
+                  <th>Tanggal Selesai</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- daftar election -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Students Tab -->
+      <div id="students-tab" class="tab-content">
+        <div class="card">
+          <h2 class="card-title">Tambah Mahasiswa Baru</h2>
+          <div id="student-response" class="response-message"></div>
+          <form id="add-student-form">
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label">NIM</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="nim"
+                  placeholder="Contoh: E1E123001"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nama</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="nama"
+                  placeholder="Masukkan nama lengkap"
+                />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label">Fakultas</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="faculty"
+                  placeholder="Contoh: Teknik"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-input"
+                  id="password"
+                  placeholder="Masukkan password"
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Tambah Mahasiswa
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Daftar Mahasiswa</h2>
+          <div class="table-container">
+            <table id="students-table">
+              <thead>
+                <tr>
+                  <th>NIM</th>
+                  <th>Nama</th>
+                  <th>Fakultas</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- daftar mahasiswa -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-info">
+            <div class="footer-logo">BlockVote</div>
+            <p>
+              Sistem voting online berbasis blockchain yang menggabungkan
+              keamanan kriptografi dengan transparansi blockchain untuk
+              memastikan integritas proses voting digital.
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 BlockVote. Hak Cipta Dilindungi.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/scripts/auth.js"></script>
+    <script src="./assets/scripts/admin.js"></script>
+  </body>
+</html>

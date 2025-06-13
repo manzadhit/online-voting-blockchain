@@ -436,8 +436,9 @@ const CONTRACT_ABI = [
   },
 ];
 
-window.$(document).ready(function () {
+$(document).ready(function () {
   const userLogin = JSON.parse(localStorage.getItem("userData"));
+
   const voterId = userLogin?.id;
 
   // Display user info if logged in
@@ -504,7 +505,6 @@ window.$(document).ready(function () {
     if (isNaN(electionId)) return;
 
     localStorage.setItem("electionId", electionId);
-    console.log("electionId:", electionId);
 
     // Check if user already voted (if MetaMask available)
     if (window.ethereum) {
