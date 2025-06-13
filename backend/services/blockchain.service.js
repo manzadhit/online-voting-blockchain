@@ -1,177 +1,125 @@
-// services/blockchainService.js
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
-const ApiError = require("../utils/ApiError");
-const httpStatus = require("http-status");
+const { ethers } = require("ethers");
+const votingABI = require("../artifacts/contracts/EVoting.sol/Voting.json").abi;
 
-// Path to the blockchain data file
-const BLOCKCHAIN_FILE = path.join(__dirname, "../data/blockchain.json");
-
-// Helper function to read blockchain data
-const readBlockchainData = () => {
-  try {
-    if (!fs.existsSync(BLOCKCHAIN_FILE)) {
-      // Create file with empty blockchain if it doesn't exist
-      fs.writeFileSync(BLOCKCHAIN_FILE, JSON.stringify({ blocks: [] }));
-      return { blocks: [] };
-    }
-    const data = fs.readFileSync(BLOCKCHAIN_FILE, "utf8");
-    
-    return JSON.parse(data);
-  } catch (error) {
-    throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      "Error reading blockchain data"
+class BlockchainService {
+  constructor() {
+    this.provider = new ethers.JsonRpcProvider(
+      `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`
+    );
+    this.wallet = new ethers.Wallet(
+      process.env.SEPOLIA_PRIVATE_KEY,
+      this.provider
+    );
+    this.contractAddress = process.env.VOTING_CONTRACT_ADDRESS;
+    this.contract = new ethers.Contract(
+      this.contractAddress,
+      votingABI,
+      this.wallet
     );
   }
-};
 
-// Helper function to write blockchain data
-const writeBlockchainData = (data) => {
-  try {
-    fs.writeFileSync(BLOCKCHAIN_FILE, JSON.stringify(data, null, 2));
-  } catch (error) {
-    throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      "Error writing blockchain data"
-    );
-  }
-};
-
-const createGenesisBlock = () => {
-  const genesisTransaction = {
-    id: "0xgenesis",
-    timestamp: new Date().toISOString(),
-    voterId: "0x0",
-    vote: "Genesis Block",
-    electionId: "0x0",
-  };
-
-  const genesisBlock = {
-    blockNumber: 0,
-    previousHash: "0x0",
-    timestamp: new Date().toISOString(),
-    transactions: [genesisTransaction],
-    nonce: Math.floor(Math.random() * 1000000),
-  };
-
-  genesisBlock.hash = calculateBlockHash(genesisBlock);
-
-  return genesisBlock;
-};
-
-const initializeBlockchain = () => {
-  if (!fs.existsSync(BLOCKCHAIN_FILE)) {
-    const genesisBlock = createGenesisBlock();
-    const blockchain = { blocks: [genesisBlock] };
-    writeBlockchainData(blockchain);
-    console.log("✅ Genesis block created and blockchain initialized.");
-  }
-};
-
-// Get all blocks
-const getBlocks = async () => {
-  const blockchain = readBlockchainData();
-  
-  return blockchain;
-};
-
-// Get a specific block by its number
-const getBlockByNumber = async (blockNumber) => {
-  const blockchain = readBlockchainData();
-  const block = blockchain.blocks.find((b) => b.blockNumber === blockNumber);
-
-  if (!block) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Block not found");
-  }
-
-  return block;
-};
-
-// Calculate hash for a block
-const calculateBlockHash = (block) => {
-  const blockData = {
-    blockNumber: block.blockNumber,
-    timestamp: block.timestamp,
-    previousHash: block.previousHash,
-    transactions: block.transactions,
-    nonce: block.nonce,
-  };
-
-  return crypto
-    .createHash("sha256")
-    .update(JSON.stringify(blockData))
-    .digest("hex");
-};
-
-// Verify the integrity of a block
-const verifyBlockIntegrity = (blockNumber) => {
-  const blockchain = readBlockchainData();
-  const currentBlock = blockchain.blocks.find((b) => b.blockNumber === blockNumber);
-  
-  if (!currentBlock) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Block not found");
-  }
-
-  // For genesis block (block 0) or block 1, just verify its own hash
-  if (blockNumber <= 1) {
-    return calculateBlockHash(currentBlock) === currentBlock.hash;
-  }
-
-  // For blocks after the genesis, verify the entire chain up to this block
-  // Start from block 1 (after genesis)
-  for (let i = 1; i <= blockNumber; i++) {
-    const block = blockchain.blocks.find((b) => b.blockNumber === i);
-    const prevBlock = blockchain.blocks.find((b) => b.blockNumber === i - 1);
-    
-    // Check if block hash is valid
-    if (calculateBlockHash(block) !== block.hash) {
-      return false;
-    }
-    
-    // Check if link to previous block is valid
-    if (block.previousHash !== prevBlock.hash) {
-      return false;
+  async vote(electionId, candidateId) {
+    try {
+      const tx = await this.contract.vote(electionId, candidateId);
+      await tx.wait();
+      return { success: true, txHash: tx.hash };
+    } catch (error) {
+      throw new Error(`Failed to vote: ${error.message}`);
     }
   }
 
-  return true; // All blocks in the chain up to this one are valid
-};
-// Create a new block with the given transaction
-const createBlock = async (transaction) => {
-  const blockchain = readBlockchainData();
-  
-  const blocks = blockchain.blocks;  
+  async hasVoted(electionId, voterAddress) {
+    console.log("election id: " + electionId + "voteradres: " + voterAddress);
+    try {
+      const voted = await this.contract.hasVotedInElection(
+        electionId,
+        voterAddress
+      );
+      return voted;
+    } catch (error) {
+      throw new Error(`Failed to check vote status: ${error.message}`);
+    }
+  }
 
-  const previousBlock = blocks.length > 0 ? blocks[blocks.length - 1] : null;
-  const previousHash = previousBlock ? previousBlock.hash : "0".repeat(64);
-  const blockNumber = previousBlock ? previousBlock.blockNumber + 1 : 1;
+  async getCandidateVoteCount(candidateId) {
+    try {
+      const count = await this.contract.getCandidateVoteCount(candidateId);
+      return parseInt(count.toString());
+    } catch (error) {
+      throw new Error(`Failed to get vote count: ${error.message}`);
+    }
+  }
 
-  // Create a new block
-  const newBlock = {
-    blockNumber: blockNumber,
-    timestamp: new Date().toISOString(),
-    previousHash,
-    transactions: [transaction],
-    nonce: Math.floor(Math.random() * 1000000), // Simplified for demo
-  };
+  async getElectionVoteCount(electionId) {
+    try {
+      const count = await this.contract.getElectionVoteCount(electionId);
+      return parseInt(count.toString());
+    } catch (error) {
+      throw new Error(`Failed to get election vote count: ${error.message}`);
+    }
+  }
 
-  // Calculate hash for the new block
-  newBlock.hash = calculateBlockHash(newBlock);
+  async getElectionResults(electionId, candidateIds) {
+    try {
+      const results = await this.contract.getElectionResults(
+        electionId,
+        candidateIds
+      );
+      return {
+        candidateIds: results[0].map((id) => id.toString()),
+        voteCounts: results[1].map((count) => parseInt(count.toString())),
+      };
+    } catch (error) {
+      throw new Error(`Failed to get election results: ${error.message}`);
+    }
+  }
 
-  // Add the new block to the blockchain
-  blocks.push(newBlock);
-  writeBlockchainData({ blocks });
+  async getVotesByElection(electionId) {
+    try {
+      const votes = await this.contract.getVotesByElection(electionId);
+      return votes.map((vote) => ({
+        voter: vote.voter,
+        candidateId: vote.candidateId.toString(),
+        electionId: vote.electionId.toString(),
+        timestamp: parseInt(vote.timestamp.toString()),
+      }));
+    } catch (error) {
+      throw new Error(`Failed to get votes by election: ${error.message}`);
+    }
+  }
 
-  return newBlock;
-};
+  async getAllVotes() {
+    try {
+      const votes = await this.contract.getAllVotes();
+      return votes.map((vote) => ({
+        voter: vote.voter,
+        candidateId: vote.candidateId.toString(),
+        electionId: vote.electionId.toString(),
+        timestamp: parseInt(vote.timestamp.toString()),
+      }));
+    } catch (error) {
+      throw new Error(`Failed to get all votes: ${error.message}`);
+    }
+  }
 
-module.exports = {
-  getBlocks,
-  getBlockByNumber,
-  verifyBlockIntegrity,
-  createBlock,
-  initializeBlockchain,
-  calculateBlockHash,
-};
+  async getTotalVotes() {
+    try {
+      const count = await this.contract.getTotalVotes();
+      return parseInt(count.toString());
+    } catch (error) {
+      throw new Error(`Failed to get total votes: ${error.message}`);
+    }
+  }
+
+  async getTransactionDetails(txHash) {
+    try {
+      const tx = await this.provider.getTransaction(txHash);
+      const receipt = await this.provider.getTransactionReceipt(txHash);
+      return { transaction: tx, receipt: receipt };
+    } catch (error) {
+      throw new Error(`Failed to get transaction details: ${error.message}`);
+    }
+  }
+}
+
+module.exports = new BlockchainService();

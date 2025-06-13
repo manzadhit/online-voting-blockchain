@@ -1,4 +1,3 @@
-// controllers/votingController.js
 const httpStatus = require("http-status");
 const votingService = require("../services/voting.service");
 const authService = require("../services/auth.service");
@@ -12,14 +11,21 @@ const getActiveElections = catchAsync(async (req, res) => {
     status: httpStatus.OK,
     message: "Active elections retrieved successfully",
     data: {
-      elections: elections,
-      allVoter: allVoter,
+      elections,
+      allVoter,
     },
   });
 });
 
 const getVoterInfo = catchAsync(async (req, res) => {
-  const { voterId } = req.params;
+  const voterId = parseInt(req.params.voterId, 10);
+  if (isNaN(voterId)) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      status: httpStatus.BAD_REQUEST,
+      message: "Invalid voterId",
+    });
+  }
+
   const voter = await votingService.getVoterInfo(voterId);
   return res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -29,13 +35,24 @@ const getVoterInfo = catchAsync(async (req, res) => {
 });
 
 const submitVote = catchAsync(async (req, res) => {
-  const { voterId, candidateId, electionId } = req.body;
+  const voterId = parseInt(req.body.voterId, 10);
+  const candidateId = parseInt(req.body.candidateId, 10);
+  const electionId = parseInt(req.body.electionId, 10);
+
+  if ([voterId, candidateId, electionId].some(Number.isNaN)) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      status: httpStatus.BAD_REQUEST,
+      message:
+        "Invalid input: voterId, candidateId, and electionId must be integers",
+    });
+  }
+
   const transaction = await votingService.submitVote(
     voterId,
     candidateId,
     electionId
   );
-  
+
   return res.status(httpStatus.CREATED).send({
     status: httpStatus.CREATED,
     message: "Vote submitted successfully",
@@ -44,7 +61,14 @@ const submitVote = catchAsync(async (req, res) => {
 });
 
 const getResult = catchAsync(async (req, res) => {
-  const { electionId } = req.params;
+  const electionId = parseInt(req.params.electionId, 10);
+  if (isNaN(electionId)) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      status: httpStatus.BAD_REQUEST,
+      message: "Invalid electionId",
+    });
+  }
+
   const result = await votingService.getResult(electionId);
   return res.status(httpStatus.OK).send({
     status: httpStatus.OK,

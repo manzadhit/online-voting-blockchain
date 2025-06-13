@@ -9,8 +9,9 @@ const ApiError = require("../utils/ApiError");
  */
 const createCandidate = async (candidateBody) => {
   // Verifikasi apakah election ada
+  const electionIdInt = parseInt(candidateBody.electionId, 10);
   const election = await prisma.election.findUnique({
-    where: { id: candidateBody.electionId },
+    where: { id: electionIdInt },
   });
 
   if (!election) {
@@ -18,7 +19,7 @@ const createCandidate = async (candidateBody) => {
   }
 
   return prisma.candidate.create({
-    data: candidateBody,
+    data: { electionId: electionIdInt, ...candidateBody },
   });
 };
 

@@ -1,14 +1,26 @@
-// routes/blockchainRoutes.js
 const express = require("express");
 const blockchainController = require("../controllers/blockchain.controller");
 
 const router = express.Router();
 
-router.get("/", blockchainController.getBlocks);
-router.get("/:blockNumber", blockchainController.getBlockByNumber);
+router.post("/vote", blockchainController.voteOnBlockchain);
 router.get(
-  "/:blockNumber/verify",
-  blockchainController.verifyBlockIntegrity
+  "/candidate-votes/:candidateId",
+  blockchainController.getCandidateVoteCount
 );
+router.post(
+  "/election-results/:electionId",
+  blockchainController.getElectionResults
+);
+router.get(
+  "/voter-status/:voterId/:electionId",
+  blockchainController.getVoterStatus
+);
+router.get(
+  "/election-votes/:electionId",
+  blockchainController.getElectionVotes
+);
+router.get("/all-votes", blockchainController.getAllVotes);
+router.get("/transaction/:txHash", blockchainController.getTransactionDetails);
 
 module.exports = router;

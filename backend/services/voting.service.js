@@ -219,10 +219,66 @@ function getVotingCountdown(endDate) {
   )}:${String(seconds).padStart(2, "0")}`;
 }
 
+// Record vote to database after blockchain transaction
+const recordVote = async (voterId, candidateId, electionId, txHash) => {
+  // Update student's voted elections
+  await prisma.student.update({
+    where: { id: voterId },
+    data: {
+      votedElections: {
+        push: electionId
+      }
+    }
+  });
+
+  // Increment candidate vote count
+  await prisma.candidate.update({
+    where: { id: candidateId },
+    data: {
+      voteCount: {
+        increment: 1
+      }
+    }
+  });
+
+  // Optional: Create a Vote record to store transaction hash
+  // Uncomment if you add Vote model to schema
+  /*
+  await prisma.vote.create({
+    data: {
+      voterId,
+      candidateId,
+      electionId,
+      txHash,
+      timestamp: new Date()
+    }
+  });
+  */
+};
+
+// Get candidates by election ID
+const getCandidatesByElection = async (electionId) => {
+  return await prisma.candidate.findMany({
+    where: { electionId: electionId }
+  });
+};
+
+// Check if voter has already voted in specific election
+const hasVoterVoted = async (voterId, electionId) => {
+  const student = await prisma.student.findUnique({
+    where: { id: voterId }
+  });
+  
+  return student?.votedElections.includes(electionId) || false;
+};
+
 module.exports = {
   getActiveElections,
   getVoterInfo,
   submitVote,
   getResult,
   getVoteCount,
+  recordVote,
+  getCandidatesByElection,
+  hasVoterVoted,
 };

@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,18 +12,18 @@ datasource db {
 }
 
 model Student {
-  id            String     @id @default(cuid())
+  id            Int        @id @default(autoincrement())
   name          String
   nim           String     @unique
   faculty       String
   password      String
-  votedElections String[]   // Array of election IDs yang sudah dipilih
+  votedElections Int[]      // Array of election IDs yang sudah dipilih
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 }
 
 model Admin {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   username  String   @unique
   password  String
   name      String
@@ -35,7 +32,7 @@ model Admin {
 }
 
 model Election {
-  id         String      @id @default(cuid())
+  id         Int         @id @default(autoincrement())
   name       String
   isActive   Boolean     @default(true)
   startDate  DateTime
@@ -46,7 +43,7 @@ model Election {
 }
 
 model Candidate {
-  id              String   @id @default(cuid())
+  id              Int      @id @default(autoincrement())
   mainName        String
   mainInitials    String?
   mainFaculty     String
@@ -55,7 +52,7 @@ model Candidate {
   deputyFaculty   String
   vision          String   @db.Text
   voteCount       Int      @default(0)
-  electionId      String
+  electionId      Int
   election        Election @relation(fields: [electionId], references: [id])
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
