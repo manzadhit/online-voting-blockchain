@@ -2,6 +2,251 @@ const prisma = require("../prisma/client");
 const bcrypt = require("bcrypt");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
+const ethers = require("ethers");
+require("dotenv").config();
+
+const ABI = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "candidateId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "electionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "VotedCasted",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_voterAddress",
+        "type": "address"
+      }
+    ],
+    "name": "addVoterToWhiteList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "allVotes",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "candidateId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "electionId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "changeAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_electionId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_candidateIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "getAllCandidateVoteCount",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_electionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getElectionVoteCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "hasVoted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isWhiteListed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_candidateId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_electionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "vote",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "voteCounts",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+
+const CONTRACT_ADDRESS = "0x5Ad61725ed7C1A09443e10f2f33997d07BC5DF7E";
+
 
 const getAllStudents = async () => {
   return await prisma.student.findMany();
@@ -28,7 +273,6 @@ const createStudent = async (nim, name, faculty, password) => {
       name,
       faculty,
       password: hashedPassword,
-      votedElections: [], // Inisialisasi array kosong untuk pemilihan yang sudah diikuti
     },
   });
 };
@@ -128,6 +372,65 @@ const resetPassword = async (nim, oldPassword, newPassword) => {
   return updatedStudent;
 };
 
+const addWalletAddress = async (nim, walletAddress) => {
+  const student = await getStudentByNIM(nim);
+
+  if(student.walletAddress) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Anda sudah pernah mendaftarkan alamat dompet."
+    );
+    
+  }
+
+  const alreadyRegisterWalletAdress = await prisma.student.findUnique({
+    where: {
+      walletAddress
+    }
+  });
+
+  if(alreadyRegisterWalletAdress) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Alamat dompet ini sudah terdaftar oleh pengguna lain."
+    );
+  }
+
+  const studentUpdated =  await prisma.student.update({
+    where: {
+      id: student.id
+    },
+    data: {
+      walletAddress
+    }
+  });
+
+  return studentUpdated;
+} 
+
+const ADMIN_PRIVATE_KEY = process.env.ADMIN_PRIVATE_KEY;
+const RPC_URL = process.env.RPC_URL;
+const provider = new ethers.JsonRpcProvider(RPC_URL);
+const adminWallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
+const contractWithAdminSigner = new ethers.Contract(
+  CONTRACT_ADDRESS,
+  ABI,
+  adminWallet
+);
+
+const whiteListWalletAddress = async (walletAddress) => {
+  try {
+    // 2. Normalisasi ke checksum format (opsional tapi bagus)
+    const normalizedAddress = ethers.getAddress(walletAddress);
+    const tx = await contractWithAdminSigner.addVoterToWhiteList(walletAddress);
+    await tx.wait();
+    console.log("Wallet berhasil di-whitelist:", walletAddress);
+  } catch (error) {
+    console.error("Error whitelisting wallet:", error);
+    throw error; // Re-throw untuk ditangani di level atas
+  }
+};
+
 module.exports = {
   getAllStudents,
   getStudentByNIM,
@@ -136,4 +439,6 @@ module.exports = {
   deleteStudent,
   loginStudent,
   resetPassword,
+  addWalletAddress,
+  whiteListWalletAddress,
 };

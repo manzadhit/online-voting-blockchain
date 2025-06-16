@@ -36,6 +36,19 @@ const ABI = [
     type: "event",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_voterAddress",
+        type: "address",
+      },
+    ],
+    name: "addVoterToWhiteList",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "admin",
     outputs: [
@@ -165,6 +178,25 @@ const ABI = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "isWhiteListed",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_candidateId",
         type: "uint256",
@@ -206,7 +238,7 @@ const ABI = [
   },
 ];
 
-const CONTRACT_ADDRESS = "0xC2F16C259ED091Cd2f647c9632F44AC759f73120";
+const CONTRACT_ADDRESS = "0x5Ad61725ed7C1A09443e10f2f33997d07BC5DF7E";
 
 let signer;
 let provider;
@@ -281,3 +313,24 @@ const getAllCandidateVoteCount = async (electionId, candidateIds) => {
 
   return count;
 };
+
+/**
+ * Mengecek apakah sebuah alamat sudah ter-whitelist di smart contract.
+ * @param {string} addressToCheck Alamat dompet yang ingin dicek.
+ * @returns {Promise<boolean>} Mengembalikan true jika ter-whitelist, false jika tidak.
+ */
+const isAddressWhitelisted = async () => {
+  // Pastikan kontrak sudah terinisialisasi
+  await connectMetaMask()
+
+  try {
+    // Panggil nama mapping seolah-olah itu adalah fungsi
+    const status = await contract.isWhiteListed(voterAddress);
+    console.log(status); // Ini akan mengembalikan true atau false
+  } catch (error) {
+    console.error("Gagal mengecek status whitelist:", error);
+    return false; // Anggap false jika terjadi error
+  }
+};
+
+isAddressWhitelisted()

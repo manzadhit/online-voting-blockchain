@@ -6,20 +6,20 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model Student {
-  id            Int        @id @default(autoincrement())
+  id            Int      @id @default(autoincrement())
   name          String
-  nim           String     @unique
+  nim           String   @unique
   faculty       String
   password      String
-  votedElections Int[]      // Array of election IDs yang sudah dipilih
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  walletAddress String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Admin {
@@ -43,17 +43,17 @@ model Election {
 }
 
 model Candidate {
-  id              Int      @id @default(autoincrement())
-  mainName        String
-  mainInitials    String?
-  mainFaculty     String
-  deputyName      String
-  deputyInitials  String?
-  deputyFaculty   String
-  vision          String   @db.Text
-  voteCount       Int      @default(0)
-  electionId      Int
-  election        Election @relation(fields: [electionId], references: [id])
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  mainName       String
+  mainInitials   String?
+  mainFaculty    String
+  deputyName     String
+  deputyInitials String?
+  deputyFaculty  String
+  vision         String   @db.Text
+  voteCount      Int      @default(0)
+  electionId     Int
+  election       Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

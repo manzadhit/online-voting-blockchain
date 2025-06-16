@@ -126,6 +126,20 @@ const resetPassword = catchAsync(async (req, res) => {
   });
 });
 
+const addWalletAddress = catchAsync(async (req, res) => {
+  const { nim, walletAddress } = req.body;
+
+  const student = await studentService.addWalletAddress(nim, walletAddress);
+  await studentService.whiteListWalletAddress(walletAddress);
+
+  return res.status(httpStatus.OK).send({
+    status: httpStatus.OK,
+    message:
+      "Alamat dompet berhasil disimpan di database dan didaftarkan di blockchain.",
+    data: student,
+  });
+});
+
 module.exports = {
   getAllStudents,
   getStudentById,
@@ -137,4 +151,5 @@ module.exports = {
   deleteStudentById,
   login,
   resetPassword,
+  addWalletAddress,
 };

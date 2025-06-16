@@ -9,5 +9,6 @@ router.put("/:nim", studentConttoller.updateStudent);
 router.delete("/:nim", studentConttoller.deleteStudent);
 router.post("/login", studentConttoller.login);
 router.post("/reset-password", studentConttoller.resetPassword);
+router.post("/addWalletAddress", studentConttoller.addWalletAddress);
 
 module.exports = router;

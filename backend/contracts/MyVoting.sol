@@ -15,6 +15,8 @@ contract MyVoting {
 
   mapping(uint256 => mapping(uint256 => uint256)) public voteCounts; // _electionId => _candidateId => count
 
+  mapping(address => bool) public isWhiteListed; 
+
   address public admin;
 
   event VotedCasted(address indexed voter, uint256 indexed candidateId, uint256 indexed electionId, uint256 timestamp);
@@ -33,7 +35,14 @@ contract MyVoting {
     admin = msg.sender;
   }
 
+  function addVoterToWhiteList(address _voterAddress) public onlyAdmin() {
+    require(!isWhiteListed[_voterAddress], "Voter already whitelisted");
+    isWhiteListed[_voterAddress] = true;
+  }
+
   function vote(uint256 _candidateId, uint256 _electionId) public hasNotVote(_electionId) {
+    require(isWhiteListed[msg.sender], "Voter is not whitelisted to vote");
+
     Vote memory newVote = Vote({
       voter: msg.sender,
       candidateId: _candidateId,
