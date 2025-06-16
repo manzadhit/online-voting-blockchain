@@ -60,26 +60,26 @@ const submitVote = catchAsync(async (req, res) => {
   });
 });
 
-const getResult = catchAsync(async (req, res) => {
-  const electionId = parseInt(req.params.electionId, 10);
-  if (isNaN(electionId)) {
-    return res.status(httpStatus.BAD_REQUEST).send({
-      status: httpStatus.BAD_REQUEST,
-      message: "Invalid electionId",
-    });
-  }
+// const getResult = catchAsync(async (req, res) => {
+//   const electionId = parseInt(req.params.electionId, 10);
+//   if (isNaN(electionId)) {
+//     return res.status(httpStatus.BAD_REQUEST).send({
+//       status: httpStatus.BAD_REQUEST,
+//       message: "Invalid electionId",
+//     });
+//   }
 
-  const result = await votingService.getResult(electionId);
-  return res.status(httpStatus.OK).send({
-    status: httpStatus.OK,
-    message: "Election Result retrieved successfully",
-    data: result,
-  });
-});
+//   const result = await votingService.getResult(electionId);
+//   return res.status(httpStatus.OK).send({
+//     status: httpStatus.OK,
+//     message: "Election Result retrieved successfully",
+//     data: result,
+//   });
+// });
 
 module.exports = {
   getActiveElections,
   getVoterInfo,
   submitVote,
-  getResult,
+  // getResult,
 };

@@ -1,441 +1,3 @@
-const CONTRACT_ADDRESS = "0x276a5f700a09DB1AeA3A875c5A6B94eF03B8Ed22"; // << GANTI DENGAN ALAMAT KONTRAK ANDA
-const CONTRACT_ABI = [
-  {
-    inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "voter",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "candidateId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "electionId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256",
-      },
-    ],
-    name: "VoteCasted",
-    type: "event",
-  },
-  {
-    inputs: [],
-    name: "admin",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_newAdmin",
-        type: "address",
-      },
-    ],
-    name: "changeAdmin",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getAllVotes",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "voter",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "candidateId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "electionId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct Voting.Vote[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_candidateId",
-        type: "uint256",
-      },
-    ],
-    name: "getCandidateVoteCount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_electionId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256[]",
-        name: "_candidateIds",
-        type: "uint256[]",
-      },
-    ],
-    name: "getElectionResults",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "candidateIds",
-        type: "uint256[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "voteCounts",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_electionId",
-        type: "uint256",
-      },
-    ],
-    name: "getElectionVoteCount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTotalVotes",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_index",
-        type: "uint256",
-      },
-    ],
-    name: "getVote",
-    outputs: [
-      {
-        internalType: "address",
-        name: "voter",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "candidateId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "electionId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_candidateId",
-        type: "uint256",
-      },
-    ],
-    name: "getVotesByCandidate",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "voter",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "candidateId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "electionId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct Voting.Vote[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_electionId",
-        type: "uint256",
-      },
-    ],
-    name: "getVotesByElection",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "voter",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "candidateId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "electionId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct Voting.Vote[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_voter",
-        type: "address",
-      },
-    ],
-    name: "getVotesByVoter",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "voter",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "candidateId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "electionId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct Voting.Vote[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "hasVoted",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_electionId",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_voter",
-        type: "address",
-      },
-    ],
-    name: "hasVotedInElection",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_electionId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_candidateId",
-        type: "uint256",
-      },
-    ],
-    name: "vote",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "votes",
-    outputs: [
-      {
-        internalType: "address",
-        name: "voter",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "candidateId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "electionId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-];
-
 $(document).ready(function () {
   const userLogin = JSON.parse(localStorage.getItem("userData"));
 
@@ -509,13 +71,9 @@ $(document).ready(function () {
     // Check if user already voted (if MetaMask available)
     if (window.ethereum) {
       try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
         const accounts = await provider.listAccounts();
 
         if (accounts.length > 0) {
-          const signer = await provider.getSigner();
-          const voterAddress = await signer.getAddress();
-
           const alreadyVoted = await checkIfAlreadyVoted(
             electionId,
             voterAddress
@@ -612,29 +170,6 @@ $(document).ready(function () {
     });
   }
 
-  // Function to check if user has already voted
-  async function checkIfAlreadyVoted(electionId, voterAddress) {
-    try {
-      if (!window.ethereum) return false;
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
-        provider
-      );
-
-      const hasVoted = await contract.hasVotedInElection(
-        electionId,
-        voterAddress
-      );
-      return hasVoted;
-    } catch (error) {
-      console.error("Error checking vote status:", error);
-      return false;
-    }
-  }
-
   // Helper function to generate initials if not provided
   function getInitials(name) {
     return name
@@ -655,7 +190,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     // Validation
-    if (!selectedCandidateId || !voterId || !electionId) {
+    if (!selectedCandidateId || !electionId) {
       $("#errorMessage").text(
         "Pastikan Anda memilih pemilihan dan kandidat terlebih dahulu."
       );
@@ -672,20 +207,19 @@ $(document).ready(function () {
       return;
     }
 
+    // Disable button to prevent double voting
+    $("#vote-btn").prop("disabled", true).text("Memproses...");
     try {
-      // Disable button to prevent double voting
-      $("#vote-btn").prop("disabled", true).text("Memproses...");
-
-      // Connect to MetaMask
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      const voterAddress = await signer.getAddress();
-
-      console.log("Connected address:", voterAddress);
+      if (!signer) {
+        await connectMetaMask();
+        if (!signer) {
+          throw new Error("Koneksi dompet dibatalkan atau gagal.");
+        }
+      }
 
       // Check if already voted
       const alreadyVoted = await checkIfAlreadyVoted(electionId, voterAddress);
+
       if (alreadyVoted) {
         $("#errorMessage").text(
           "Anda sudah melakukan voting untuk pemilihan ini."
@@ -695,60 +229,16 @@ $(document).ready(function () {
         return;
       }
 
-      // Create contract instance
-      const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
-        signer
-      );
-
       // Convert IDs to numbers (smart contract expects uint256)
       const electionIdNum = parseInt(electionId);
       const candidateIdNum = parseInt(selectedCandidateId);
 
-      console.log("Voting with:", { electionIdNum, candidateIdNum });
-
-      // Send vote transaction
-      const tx = await contract.vote(electionIdNum, candidateIdNum);
-      console.log("Transaction sent:", tx.hash);
-
-      // Show waiting modal
-      $("#vote-btn").text("Menunggu Konfirmasi...");
-
-      // Wait for transaction confirmation
-      const receipt = await tx.wait();
-      console.log("Transaction confirmed:", receipt);
-
-      // Save vote to backend (optional)
-      // const payload = {
-      //   voterId: voterId,
-      //   candidateId: selectedCandidateId,
-      //   electionId: electionId,
-      //   txHash: tx.hash,
-      //   blockNumber: receipt.blockNumber,
-      //   voterAddress: voterAddress,
-      // };
-
-      // Optional: Send to your backend for record keeping
-      // $.ajax({
-      //   url: "http://localhost:3000/voting/vote",
-      //   method: "POST",
-      //   contentType: "application/json",
-      //   data: JSON.stringify(payload),
-      //   success: function (response) {
-      //     console.log("Vote recorded in backend:", response);
-      //   },
-      //   error: function (error) {
-      //     console.log("Backend recording failed:", error);
-      //     // Continue anyway since blockchain vote succeeded
-      //   },
-      // });
-
+      const result = await vote(candidateIdNum, electionIdNum);
       // Show success modal
       $("#successMessage").html(`
         <strong>Vote berhasil!</strong><br>
-        Transaction Hash: ${tx.hash}<br>
-        Block Number: ${receipt.blockNumber}
+        Transaction Hash: ${result.receipt.transactionHash}<br>
+        Block Number: ${result.receipt.blockNumber}
       `);
       $("#successModal").css("display", "block");
 
@@ -757,7 +247,8 @@ $(document).ready(function () {
     } catch (error) {
       console.error("Voting error:", error);
 
-      let errorMessage = "Terjadi kesalahan saat voting.";
+      let errorMessage =
+        error.reason || error.message || "Terjadi kesalahan saat voting.";
 
       if (error.code === 4001) {
         errorMessage = "Transaksi dibatalkan oleh user.";

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (currentPage.includes("admin.html")) {
       if (!userData.username) {
-        window.location.href = "loginAdmin.html";
+        window.location.href = "login-admin.html";
         return;
       }
     }
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentPage = window.location.pathname;
 
     if (currentPage.includes("admin.html")) {
-      window.location.href = "loginAdmin.html";
+      window.location.href = "login-admin.html";
       return;
     }
 

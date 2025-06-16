@@ -3,7 +3,7 @@ const path = require("path");
 const crypto = require("crypto");
 const httpStatus = require("http-status");
 const ApiError = require("../utils/ApiError");
-const blockchainService = require("./blockchain.service");
+// const blockchainService = require("./blockchain.service");
 const prisma = require("../prisma/client");
 
 const BLOCKCHAIN_FILE = path.join(__dirname, "../data/blockchain.json");
@@ -104,64 +104,64 @@ const submitVote = async (voterId, candidateId, electionId) => {
   };
 };
 
-// Hasil voting dari blockchain
-const getResult = async (electionId) => {
-  const blockchainData = readData(BLOCKCHAIN_FILE);
-  const totalVoter = await prisma.student.count();
+// // Hasil voting dari blockchain
+// const getResult = async (electionId) => {
+//   const blockchainData = readData(BLOCKCHAIN_FILE);
+//   const totalVoter = await prisma.student.count();
 
-  const hashedElectionId = crypto
-    .createHash("sha256")
-    .update(electionId)
-    .digest("hex");
+//   const hashedElectionId = crypto
+//     .createHash("sha256")
+//     .update(electionId)
+//     .digest("hex");
 
-  const totalVote = blockchainData.blocks?.reduce((acc, block) => {
-    const voteCountForThisBlock =
-      block.transactions?.filter((tx) => tx.electionId === hashedElectionId)
-        .length || 0;
-    return acc + voteCountForThisBlock;
-  }, 0);
+//   const totalVote = blockchainData.blocks?.reduce((acc, block) => {
+//     const voteCountForThisBlock =
+//       block.transactions?.filter((tx) => tx.electionId === hashedElectionId)
+//         .length || 0;
+//     return acc + voteCountForThisBlock;
+//   }, 0);
 
-  const election = await prisma.election.findUnique({
-    where: { id: electionId },
-  });
+//   const election = await prisma.election.findUnique({
+//     where: { id: electionId },
+//   });
 
-  const votingCountDown = getVotingCountdown(election.endDate);
+//   const votingCountDown = getVotingCountdown(election.endDate);
 
-  const candidates = await prisma.candidate.findMany({
-    where: { electionId },
-  });
+//   const candidates = await prisma.candidate.findMany({
+//     where: { electionId },
+//   });
 
-  const results = candidates.map((candidate) => {
-    const voteCount = getVoteCount(electionId, candidate.id);
+//   const results = candidates.map((candidate) => {
+//     const voteCount = getVoteCount(electionId, candidate.id);
 
-    const percentage =
-      totalVote > 0 ? ((voteCount / totalVote) * 100).toFixed(1) : "0.0";
+//     const percentage =
+//       totalVote > 0 ? ((voteCount / totalVote) * 100).toFixed(1) : "0.0";
 
-    return {
-      ...candidate,
-      voteCount,
-      percentage: parseFloat(percentage),
-    };
-  });
+//     return {
+//       ...candidate,
+//       voteCount,
+//       percentage: parseFloat(percentage),
+//     };
+//   });
 
-  const maxVote = Math.max(...results.map((c) => c.voteCount));
-  results.forEach((candidate) => {
-    candidate.status = candidate.voteCount === maxVote ? "Memimpin" : "-";
-  });
+//   const maxVote = Math.max(...results.map((c) => c.voteCount));
+//   results.forEach((candidate) => {
+//     candidate.status = candidate.voteCount === maxVote ? "Memimpin" : "-";
+//   });
 
-  const participationRate =
-    totalVoter > 0 ? ((totalVote / totalVoter) * 100).toFixed(1) : "0.0";
+//   const participationRate =
+//     totalVoter > 0 ? ((totalVote / totalVoter) * 100).toFixed(1) : "0.0";
 
-  const electionName = election.name;
-  return {
-    totalVoter,
-    totalVote,
-    participationRate,
-    votingCountDown,
-    electionName,
-    candidates: results,
-  };
-};
+//   const electionName = election.name;
+//   return {
+//     totalVoter,
+//     totalVote,
+//     participationRate,
+//     votingCountDown,
+//     electionName,
+//     candidates: results,
+//   };
+// };
 
 function readData(filePath) {
   try {
@@ -276,7 +276,7 @@ module.exports = {
   getActiveElections,
   getVoterInfo,
   submitVote,
-  getResult,
+  // getResult,
   getVoteCount,
   recordVote,
   getCandidatesByElection,

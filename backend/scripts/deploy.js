@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Voting = await hre.ethers.getContractFactory("Voting");
+  const Voting = await hre.ethers.getContractFactory("MyVoting");
   const voting = await Voting.deploy();
 
   console.log("Voting deployed to:", voting.target);
