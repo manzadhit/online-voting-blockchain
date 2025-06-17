@@ -7,246 +7,245 @@ require("dotenv").config();
 
 const ABI = [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "voter",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "voter",
+        type: "address",
       },
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "candidateId",
-        "type": "uint256"
+        indexed: true,
+        internalType: "uint256",
+        name: "candidateId",
+        type: "uint256",
       },
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "electionId",
-        "type": "uint256"
+        indexed: true,
+        internalType: "uint256",
+        name: "electionId",
+        type: "uint256",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
     ],
-    "name": "VotedCasted",
-    "type": "event"
+    name: "VotedCasted",
+    type: "event",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_voterAddress",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "_voterAddress",
+        type: "address",
+      },
     ],
-    "name": "addVoterToWhiteList",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "addVoterToWhiteList",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "admin",
-    "outputs": [
+    inputs: [],
+    name: "admin",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "name": "allVotes",
-    "outputs": [
+    name: "allVotes",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "voter",
-        "type": "address"
+        internalType: "address",
+        name: "voter",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "candidateId",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "candidateId",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "electionId",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "electionId",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_newAdmin",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "_newAdmin",
+        type: "address",
+      },
     ],
-    "name": "changeAdmin",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "changeAdmin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "_electionId",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "_electionId",
+        type: "uint256",
       },
       {
-        "internalType": "uint256[]",
-        "name": "_candidateIds",
-        "type": "uint256[]"
-      }
+        internalType: "uint256[]",
+        name: "_candidateIds",
+        type: "uint256[]",
+      },
     ],
-    "name": "getAllCandidateVoteCount",
-    "outputs": [
+    name: "getAllCandidateVoteCount",
+    outputs: [
       {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "_electionId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "_electionId",
+        type: "uint256",
+      },
     ],
-    "name": "getElectionVoteCount",
-    "outputs": [
+    name: "getElectionVoteCount",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "name": "hasVoted",
-    "outputs": [
+    name: "hasVoted",
+    outputs: [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "name": "isWhiteListed",
-    "outputs": [
+    name: "isWhiteListed",
+    outputs: [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "_candidateId",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "_candidateId",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "_electionId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "_electionId",
+        type: "uint256",
+      },
     ],
-    "name": "vote",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "vote",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "name": "voteCounts",
-    "outputs": [
+    name: "voteCounts",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
+    stateMutability: "view",
+    type: "function",
+  },
+];
 
 const CONTRACT_ADDRESS = "0x5Ad61725ed7C1A09443e10f2f33997d07BC5DF7E";
-
 
 const getAllStudents = async () => {
   return await prisma.student.findMany();
@@ -372,41 +371,50 @@ const resetPassword = async (nim, oldPassword, newPassword) => {
   return updatedStudent;
 };
 
-const addWalletAddress = async (nim, walletAddress) => {
+const addWalletAddress = async (nim, walletAddress, password) => {
   const student = await getStudentByNIM(nim);
 
-  if(student.walletAddress) {
+  const isPasswordValid = await bcrypt.compare(password, student.password);
+  if (!isPasswordValid) {
+    throw new ApiError(
+      httpStatus.UNAUTHORIZED,
+      "Password yang Anda masukkan salah."
+    );
+  }
+
+  if (student.walletAddress) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Anda sudah pernah mendaftarkan alamat dompet."
     );
-    
   }
 
   const alreadyRegisterWalletAdress = await prisma.student.findUnique({
     where: {
-      walletAddress
-    }
+      walletAddress,
+    },
   });
 
-  if(alreadyRegisterWalletAdress) {
+  if (alreadyRegisterWalletAdress) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Alamat dompet ini sudah terdaftar oleh pengguna lain."
     );
   }
 
-  const studentUpdated =  await prisma.student.update({
+  await whiteListWalletAddress(walletAddress);
+
+  const studentUpdated = await prisma.student.update({
     where: {
-      id: student.id
+      id: student.id,
     },
     data: {
-      walletAddress
-    }
+      walletAddress,
+    },
   });
 
   return studentUpdated;
-} 
+};
 
 const ADMIN_PRIVATE_KEY = process.env.ADMIN_PRIVATE_KEY;
 const RPC_URL = process.env.RPC_URL;
@@ -419,16 +427,22 @@ const contractWithAdminSigner = new ethers.Contract(
 );
 
 const whiteListWalletAddress = async (walletAddress) => {
-  try {
-    // 2. Normalisasi ke checksum format (opsional tapi bagus)
-    const normalizedAddress = ethers.getAddress(walletAddress);
-    const tx = await contractWithAdminSigner.addVoterToWhiteList(walletAddress);
-    await tx.wait();
-    console.log("Wallet berhasil di-whitelist:", walletAddress);
-  } catch (error) {
-    console.error("Error whitelisting wallet:", error);
-    throw error; // Re-throw untuk ditangani di level atas
+  const normalizedAddress = ethers.getAddress(walletAddress);
+  const isWhiteListed = await contractWithAdminSigner.isWhiteListed(
+    normalizedAddress
+  );
+
+  if(isWhiteListed) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Alamat dompet ini sudah terdaftar di Blockchain."
+    );
   }
+
+  const tx = await contractWithAdminSigner.addVoterToWhiteList(
+    normalizedAddress
+  );
+  await tx.wait();
 };
 
 module.exports = {
