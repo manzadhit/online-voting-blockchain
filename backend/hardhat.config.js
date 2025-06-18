@@ -26,9 +26,10 @@ module.exports = {
 
     ganache: {
       url: "http://127.0.0.1:7545",
-      accounts: [
-        "0x20641b85a28f6e2424fb51e18128bc12e9de45f2c9f4386ce023d4ced96ebd44",
-      ],
+      accounts:
+        process.env.ADMIN_PRIVATE_KEY !== "undefined"
+          ? [process.env.ADMIN_PRIVATE_KEY]
+          : [],
       chainId: 1337,
     },
   },

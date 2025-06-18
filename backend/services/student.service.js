@@ -245,7 +245,22 @@ const ABI = [
   },
 ];
 
-const CONTRACT_ADDRESS = "0x5Ad61725ed7C1A09443e10f2f33997d07BC5DF7E";
+const CONTRACT_ADDRESS = process.env.SEPOLIA_CONTRACT_ADDRESS;
+const ADMIN_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY;
+const RPC_URL = process.env.SEPOLIA_RPC_URL;
+
+// Atau untuk Ganache (development lokal)
+// const CONTRACT_ADDRESS = process.env.GANACHE_CONTRACT_ADDRESS;
+// const ADMIN_PRIVATE_KEY = process.env.GANACHE_PRIVATE_KEY;
+// const RPC_URL = process.env.GANACHE_RPC_URL;
+
+const provider = new ethers.JsonRpcProvider(RPC_URL);
+const adminWallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
+const contractWithAdminSigner = new ethers.Contract(
+  CONTRACT_ADDRESS,
+  ABI,
+  adminWallet
+);
 
 const getAllStudents = async () => {
   return await prisma.student.findMany();
@@ -416,15 +431,6 @@ const addWalletAddress = async (nim, walletAddress, password) => {
   return studentUpdated;
 };
 
-const ADMIN_PRIVATE_KEY = process.env.ADMIN_PRIVATE_KEY;
-const RPC_URL = process.env.RPC_URL;
-const provider = new ethers.JsonRpcProvider(RPC_URL);
-const adminWallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
-const contractWithAdminSigner = new ethers.Contract(
-  CONTRACT_ADDRESS,
-  ABI,
-  adminWallet
-);
 
 const whiteListWalletAddress = async (walletAddress) => {
   const normalizedAddress = ethers.getAddress(walletAddress);

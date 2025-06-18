@@ -238,7 +238,7 @@ const ABI = [
   },
 ];
 
-const CONTRACT_ADDRESS = "0x5Ad61725ed7C1A09443e10f2f33997d07BC5DF7E";
+const CONTRACT_ADDRESS = "0xC899591c3c4213b36b2e55507ac315D768F3D6cd";
 
 let signer;
 let provider;
