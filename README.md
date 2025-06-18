@@ -25,6 +25,11 @@ Ikuti langkah-langkah berikut untuk menyiapkan dan menjalankan aplikasi secara l
    npm install
    ```
 
+3. Upload Schema Ke DB:
+   ```bash
+   npx prisma db push
+   ```
+
 3. Generate Prisma client:
    ```bash
    npx prisma generate
@@ -46,6 +51,11 @@ Sistem ini mendukung dua jaringan blockchain:
 File `.env` sudah dikonfigurasi dengan kedua jaringan. Pastikan nilai-nilai berikut sudah sesuai:
 
 ```env
+
+# Saya Menggunakan SupaBase
+DATABASE_URL=""
+DIRECT_URL=""
+
 # Sepolia Testnet Configuration
 SEPOLIA_CONTRACT_ADDRESS=""
 SEPOLIA_PRIVATE_KEY=""
