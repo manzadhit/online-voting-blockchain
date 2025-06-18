@@ -2,6 +2,13 @@
 
 Repositori ini berisi kode untuk aplikasi web sistem voting berbasis blockchain dengan komponen backend dan frontend yang terpisah.
 
+## Persyaratan
+
+- Node.js dan npm
+- MetaMask (untuk interaksi dengan blockchain)
+- Ganache (untuk development lokal) atau akses ke Sepolia Testnet
+- Editor kode (Visual Studio Code direkomendasikan dengan ekstensi Live Server)
+
 ## Memulai
 
 Ikuti langkah-langkah berikut untuk menyiapkan dan menjalankan aplikasi secara lokal:
@@ -138,13 +145,6 @@ online-voting-system-blockchain/
 │   └── *.html                # HTML pages
 └── README.md
 ```
-
-## Persyaratan
-
-- Node.js dan npm
-- MetaMask (untuk interaksi dengan blockchain)
-- Ganache (untuk development lokal) atau akses ke Sepolia Testnet
-- Editor kode (Visual Studio Code direkomendasikan dengan ekstensi Live Server)
 
 ## Catatan Keamanan
 
