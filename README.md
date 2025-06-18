@@ -87,7 +87,7 @@ Setelah deployment, update `CONTRACT_ADDRESS` di file `.env` dengan alamat contr
 
 #### Konfigurasi Frontend
 
-**Langkah 1: Update Contract Address**
+**Update Contract Address**
 
 Di file `frontend/assets/scripts/blockchain.js`, update alamat contract sesuai dengan yang digunakan:
 
@@ -97,14 +97,6 @@ const CONTRACT_ADDRESS = "0xC899591c3c4213b36b2e55507ac315D768F3D6cd";
 
 // Atau sesuaikan dengan contract address yang sedang digunakan
 ```
-
-**Langkah 2: Konfigurasi ABI**
-
-Pastikan ABI (Application Binary Interface) di frontend sesuai dengan smart contract yang di-deploy. ABI dapat ditemukan di:
-- `backend/artifacts/contracts/EVoting.sol/Voting.json` atau
-- `backend/artifacts/contracts/MyVoting.sol/MyVoting.json`
-
-Copy bagian `abi` dari file JSON tersebut ke dalam konfigurasi frontend.
 
 #### Switching Network
 
